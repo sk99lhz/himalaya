@@ -9,6 +9,7 @@ import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.datatrasfer.DeviceInfoProviderDefault;
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDeviceInfoProvider;
+import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
 /**
  * Created by song
@@ -33,6 +34,7 @@ public class BaseApplication extends Application {
             mXanadu.setPackid("com.ximalaya.qunfeng");
             mXanadu.init(this, mAppSecret, getDeviceInfoProvider(this));
         }
+        XmPlayerManager.getInstance(this).init();
         sHandler = new Handler();
     }
 

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PlayerActivity">
+
+    <com.lhz.sk.himalaya.views.RollTextView
+        android:id="@+id/track_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_25"
+        android:layout_marginTop="@dimen/dp_25"
+        android:layout_marginRight="@dimen/dp_25"
+        android:ellipsize="marquee"
+        android:gravity="center"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="@string/app_name"
+        android:textSize="@dimen/sp_20" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/paly_vp"
+        android:layout_marginTop="@dimen/dp_25"
+        android:layout_below="@+id/track_title"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="@dimen/dp_110"
+        android:layout_height="match_parent" />
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:gravity="center_vertical"
+           android:layout_height="wrap_content">
+           <SeekBar
+               android:id="@+id/sb_progress"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginStart="@dimen/dp_48"
+               android:layout_marginEnd="@dimen/dp_43"
+               android:gravity="center" />
+           <TextView
+               android:layout_marginStart="@dimen/dp_20"
+               android:layout_alignParentStart="true"
+               android:layout_centerVertical="true"
+               android:text="00:00"
+               android:gravity="center"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content">
+
+           </TextView>
+           <TextView
+               android:text="00:00"
+               android:layout_marginEnd="@dimen/dp_20"
+               android:layout_alignParentEnd="true"
+               android:gravity="center"
+               android:layout_centerVertical="true"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content">
+           </TextView>
+       </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/ic_repeat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_baseline_repeat_24">
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/ic_skip_previous"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_35"
+                android:layout_weight="1"
+                android:src="@drawable/ic_baseline_skip_previous_24">
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/ic_bg_play"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_45"
+                android:layout_weight="2"
+                android:src="@drawable/ic_baseline_pause_circle_filled_24">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/ic_skip_next"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_35"
+                android:layout_weight="1"
+                android:src="@drawable/ic_baseline_skip_next_24">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/ic_music_lists"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_baseline_subject_24">
+            </ImageView>
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lhz.sk.himalaya.R;
+import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 
 import java.text.SimpleDateFormat;
@@ -23,6 +24,12 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Vi
     private List<Track> mDetailData = new ArrayList<>();
     private SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat mDurationFormat = new SimpleDateFormat("mm:ss");
+    private onDetailItemCallLister mItemCallLister;
+
+    public void setItemCallLister(onDetailItemCallLister itemCallLister) {
+        mItemCallLister = itemCallLister;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -40,13 +47,21 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Vi
         TextView updateDateTv = itemView.findViewById(R.id.detail_item_update_time);
 
         Track track = mDetailData.get(position);
-        ordetTv.setText(track.getOrderNum()+1+"");
+        ordetTv.setText(track.getOrderNum() + 1 + "");
         tiltleTv.setText(track.getTrackTitle());
-        playCountTv.setText(track.getPlayCount()+"");
+        playCountTv.setText(track.getPlayCount() + "");
         int Duration = track.getDuration() * 1000;
         String format = mDurationFormat.format(Duration);
         durationTv.setText(format);
         updateDateTv.setText(mSimpleDateFormat.format(track.getUpdatedAt()));
+
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mItemCallLister != null)
+                    mItemCallLister.onItemClick(9,null);
+            }
+        });
 
     }
 
@@ -68,5 +83,9 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Vi
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
         }
+    }
+
+    public interface onDetailItemCallLister {
+        void onItemClick(int position, Album album);
     }
 }

@@ -123,9 +123,7 @@
             android:textColor="#ff848484"
             android:textSize="@dimen/sp_12" />
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:overScrollMode="never"
+    <FrameLayout
         android:id="@+id/detail_list_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

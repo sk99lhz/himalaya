@@ -116,6 +116,7 @@ public class RecommendFragment extends BaseFragment implements IRecommendViewCal
     @Override
     public void OnRetry() {
         if (mRecommendPresenter != null) {
+            mUILoader.updateStatus(UILoader.UIStatus.LOADING);
             mRecommendPresenter.getRecommendData();
         }
     }

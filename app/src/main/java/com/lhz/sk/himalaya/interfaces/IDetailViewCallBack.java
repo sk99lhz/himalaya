@@ -12,4 +12,6 @@ public interface IDetailViewCallBack {
     void onDetailLoaded(List<Track> tracks);
 
     void onAlbumLoaded(Album album);
+
+    void onNetworkError(int errorCode, String errorMsg);
 }

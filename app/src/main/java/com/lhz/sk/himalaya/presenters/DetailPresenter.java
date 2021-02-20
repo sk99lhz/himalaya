@@ -46,11 +46,6 @@ public class DetailPresenter implements IDetailPresenters {
     }
 
     @Override
-    public void getRecommendData() {
-
-    }
-
-    @Override
     public void pullRefreshMore() {
 
     }
@@ -81,8 +76,12 @@ public class DetailPresenter implements IDetailPresenters {
             }
 
             @Override
-            public void onError(int i, String s) {
-                LogUtil.e(TAB, s + i);
+            public void onError(int errorCode, String errorMsg) {
+                if (callBacks != null) {
+                    for (IDetailViewCallBack callBack : callBacks) {
+                        callBack.onNetworkError(errorCode,errorMsg);
+                    }
+                }
             }
         });
     }
