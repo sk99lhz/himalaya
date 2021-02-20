@@ -52,7 +52,7 @@ public class RecommendPresenter implements IRecommendPresenters {
 
     @Override
     public void registerViewCallback(IRecommendViewCallBack callBack) {
-        if (!callBacks.contains(callBack) && callBacks!= null) {
+        if (!callBacks.contains(callBack) && callBacks != null) {
             callBacks.add(callBack);
         }
     }
@@ -66,6 +66,7 @@ public class RecommendPresenter implements IRecommendPresenters {
 
     //获取推荐
     private void getRecommend() {
+        upLoading();
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.LIKE_COUNT, Contants.RD_COUNT + "");
         CommonRequest.getGuessLikeAlbum(map, new IDataCallBack<GussLikeAlbumList>() {
@@ -73,20 +74,39 @@ public class RecommendPresenter implements IRecommendPresenters {
             public void onSuccess(GussLikeAlbumList gussLikeAlbumList) {
                 if (gussLikeAlbumList != null) {
                     List<Album> albumList = gussLikeAlbumList.getAlbumList();
-                    if (callBacks != null) {
-                        for (IRecommendViewCallBack callBack : callBacks) {
-                            callBack.onRecommendListData(albumList);
+                    if (albumList.size() == 0) {
+                        if (callBacks != null) {
+                            for (IRecommendViewCallBack callBack : callBacks) {
+                                callBack.onEmpty();
+                            }
+                        }
+                    } else {
+                        if (callBacks != null) {
+                            for (IRecommendViewCallBack callBack : callBacks) {
+                                callBack.onRecommendListData(albumList);
+                            }
                         }
                     }
 
                 }
+
             }
 
             @Override
             public void onError(int i, String s) {
-
+                if (callBacks != null) {
+                    for (IRecommendViewCallBack callBack : callBacks) {
+                        callBack.onNetworkError();
+                    }
+                }
             }
         });
+    }
+
+    private  void  upLoading(){
+        for (IRecommendViewCallBack callBack : callBacks) {
+            callBack.onLoading();
+        }
     }
 
 }

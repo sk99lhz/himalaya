@@ -9,8 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.lhz.sk.himalaya.R;
-import com.squareup.picasso.Picasso;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 
 import java.util.ArrayList;
@@ -22,6 +22,11 @@ import java.util.List;
 public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdapter.ViewHolder> {
 
     private List<Album> mData = new ArrayList<>();
+    private onRecommendItemCallLister Itemlister;
+
+    public void setMonRecommendItemCallLister(onRecommendItemCallLister monRecommendItemCallLister) {
+        this.Itemlister = monRecommendItemCallLister;
+    }
 
     @NonNull
     @Override
@@ -33,7 +38,18 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.itemView.setTag(position);
+
         holder.setData(mData.get(position));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Itemlister != null) {
+                    Itemlister.onItemClick((Integer) v.getTag(),mData.get(position));
+                }
+
+            }
+        });
     }
 
     @Override
@@ -69,7 +85,11 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
 
             albumCountSize.setText(album.getPlayCount() + "");
             albumPlayCount.setText(album.getIncludeTrackCount() + "");
-            Picasso.with(itemView.getContext()).load(album.getCoverUrlLarge()).into(albumCover);
+            Glide.with(itemView.getContext()).load(album.getCoverUrlLarge()).into(albumCover);
         }
+    }
+
+    public interface onRecommendItemCallLister {
+        void onItemClick(int position, Album album);
     }
 }

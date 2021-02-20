@@ -10,7 +10,9 @@ import java.util.List;
 public interface IRecommendViewCallBack {
     void onRecommendListData(List<Album> albums);
 
-    void onRecommendRefreshMore(List<Album> albums);
+    void onNetworkError();
 
-    void onRecommendLoadMore(List<Album> albums);
+    void onEmpty();
+
+    void onLoading();
 }

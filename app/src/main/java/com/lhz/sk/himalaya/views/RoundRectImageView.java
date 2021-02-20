@@ -1,4 +1,4 @@
-package com.lhz.sk.himalaya.utils;
+package com.lhz.sk.himalaya.views;
 
 import android.content.Context;
 import android.graphics.Canvas;

@@ -8,13 +8,14 @@ import android.os.Bundle;
 
 import com.lhz.sk.himalaya.adapters.IndicatorAdapter;
 import com.lhz.sk.himalaya.adapters.ViewPageAdapter;
+import com.lhz.sk.himalaya.bases.BaseActivity;
 import com.lhz.sk.himalaya.utils.AppTool;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String TAB = "MainActivity";
     private MagicIndicator mMagicIndicator;

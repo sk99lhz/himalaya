@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff4f4f4">
+
+
+    <ImageView
+        android:id="@+id/iv_large_cover"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_150"
+        android:scaleType="fitXY" />
+
+    <RelativeLayout
+        android:id="@+id/subscription_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:layout_below="@id/iv_large_cover"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/detail_sub_btn"
+            android:layout_width="@dimen/dp_75"
+            android:layout_height="@dimen/dp_30"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:background="@drawable/shape_subscription_bg"
+            android:gravity="center"
+            android:text="@string/sub_tips_text"
+            android:textColor="@color/white" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/player_control_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:layout_below="@id/subscription_container"
+        android:background="#EBE8E8">
+
+        <ImageView
+            android:id="@+id/detail_play_control"
+            android:layout_width="@dimen/dp_39"
+            android:layout_height="@dimen/dp_39"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_5"
+            android:paddingBottom="@dimen/dp_10"
+            android:src="@drawable/selector_play_control_play" />
+
+        <TextView
+            android:id="@+id/play_control_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_2"
+            android:layout_marginRight="@dimen/dp_140"
+            android:layout_toRightOf="@id/detail_play_control"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:text="@string/click_play_tips_text"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_4"
+            android:layout_toLeftOf="@id/detail_arrow"
+            android:text="选集" />
+
+        <ImageView
+            android:id="@+id/detail_arrow"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_25"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="18dp"
+            android:src="@mipmap/choose" />
+
+
+    </RelativeLayout>
+
+    <com.lhz.sk.himalaya.views.RoundRectImageView
+        android:id="@+id/viv_small_cover"
+        android:layout_width="@dimen/dp_75"
+        android:layout_height="@dimen/dp_75"
+        android:layout_below="@id/iv_large_cover"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="-40dp"
+        android:scaleType="fitXY" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_large_cover"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginTop="-30dp"
+        android:layout_toRightOf="@id/viv_small_cover"
+        android:orientation="vertical">
+
+        <com.lhz.sk.himalaya.views.RollTextView
+            android:id="@+id/tv_album_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="这是标题"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_18" />
+
+        <TextView
+            android:id="@+id/tv_album_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="这个是作者信息"
+            android:textColor="#ff848484"
+            android:textSize="@dimen/sp_12" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:overScrollMode="never"
+        android:id="@+id/detail_list_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/player_control_container" />
+
+</RelativeLayout>

@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <com.lhz.sk.himalaya.views.LoadingView
+        android:id="@+id/iv_net_err"
         android:layout_width="@dimen/dp_32"
         android:layout_height="@dimen/dp_32"
         android:layout_centerInParent="true"
-        />
+        android:src="@drawable/ic_loading" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_net_err"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/dp_4"
+        android:text="正在玩命加载" />
 </RelativeLayout>

@@ -2,6 +2,7 @@ package com.lhz.sk.himalaya.bases;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Handler;
 
 import com.lhz.sk.himalaya.utils.LogUtil;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
@@ -13,6 +14,8 @@ import com.ximalaya.ting.android.opensdk.datatrasfer.IDeviceInfoProvider;
  * Created by song
  */
 public class BaseApplication extends Application {
+
+    private static Handler sHandler = null;
 
     @Override
     public void onCreate() {
@@ -30,6 +33,11 @@ public class BaseApplication extends Application {
             mXanadu.setPackid("com.ximalaya.qunfeng");
             mXanadu.init(this, mAppSecret, getDeviceInfoProvider(this));
         }
+        sHandler = new Handler();
+    }
+
+    public static Handler getHandler() {
+        return sHandler;
     }
 
     public IDeviceInfoProvider getDeviceInfoProvider(Context context) {
