@@ -25,13 +25,17 @@ public interface IPlayerViewCallBack {
 
     void onListLoaded(List<Track> list);
 
-    void onPlayModeChage(XmPlayListControl.PlayMode mode);
+    void onPlayModeChange(XmPlayListControl.PlayMode mode);
 
-    void onProgeressChange(int current, int total);
+    void onProgressChange(int current, int total);
 
     void onAdLoading();
 
     void onAdFinished();
 
+    void onTrackUpData(Track track,int playIndex);
+
+
+    void updateListOrder(boolean isOrder);
 
 }

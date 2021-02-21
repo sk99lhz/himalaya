@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lhz.sk.himalaya.R;
-import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 
 import java.text.SimpleDateFormat;
@@ -59,7 +58,7 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Vi
             @Override
             public void onClick(View v) {
                 if (mItemCallLister != null)
-                    mItemCallLister.onItemClick(9,null);
+                    mItemCallLister.onItemClick(mDetailData,position);
             }
         });
 
@@ -86,6 +85,6 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Vi
     }
 
     public interface onDetailItemCallLister {
-        void onItemClick(int position, Album album);
+        void onItemClick( List<Track> album,int position);
     }
 }

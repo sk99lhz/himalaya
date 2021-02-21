@@ -15,7 +15,7 @@ import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
  * Created by song
  */
 public class BaseApplication extends Application {
-
+    private static Context mContext;
     private static Handler sHandler = null;
 
     @Override
@@ -36,10 +36,15 @@ public class BaseApplication extends Application {
         }
         XmPlayerManager.getInstance(this).init();
         sHandler = new Handler();
+        mContext = getApplicationContext();
     }
 
     public static Handler getHandler() {
         return sHandler;
+    }
+
+    public static Context getContext() {
+        return mContext;
     }
 
     public IDeviceInfoProvider getDeviceInfoProvider(Context context) {

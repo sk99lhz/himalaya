@@ -24,4 +24,10 @@ public interface IPlayerPresenter extends BaseViewCallBack<IPlayerViewCallBack> 
     void playByIndex(int index);
 
     void seekTo(int seek);
+
+    boolean isPlay();
+
+    void revesePlayList();
+
+
 }

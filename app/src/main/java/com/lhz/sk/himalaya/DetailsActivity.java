@@ -22,7 +22,7 @@ import com.lhz.sk.himalaya.adapters.DetailListAdapter;
 import com.lhz.sk.himalaya.bases.BaseActivity;
 import com.lhz.sk.himalaya.interfaces.IDetailViewCallBack;
 import com.lhz.sk.himalaya.presenters.DetailPresenter;
-import com.lhz.sk.himalaya.presenters.RecommendPresenter;
+import com.lhz.sk.himalaya.presenters.PlayerPresenter;
 import com.lhz.sk.himalaya.views.RoundRectImageView;
 import com.lhz.sk.himalaya.views.UILoader;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
@@ -161,7 +161,9 @@ public class DetailsActivity extends BaseActivity implements IDetailViewCallBack
     }
 
     @Override
-    public void onItemClick(int position, Album album) {
+    public void onItemClick(List<Track> album, int position) {
+        PlayerPresenter presenter = PlayerPresenter.getInstance();
+        presenter.setPlayList(album, position);
         startActivity(new Intent(this, PlayerActivity.class));
     }
 }

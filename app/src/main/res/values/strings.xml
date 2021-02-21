@@ -8,4 +8,21 @@
         <item>订阅</item>
         <item>历史</item>
     </string-array>
+    <string name="play_mode_order_text">顺序播放</string>
+    <string name="play_mode_random_text">随机播放</string>
+    <string name="play_mode_list_play_text">列表循环</string>
+    <string name="play_mode_single_text">单曲循环</string>
+    <string name="about_github">https://github.com/sk99lhz</string>
+    <string name="menu_share">分享给好友</string>
+    <string name="share">分享</string>
+    <string name="about_project_url">https://github.com/</string>
+    <string name="share_app">https://github.com/</string>
+    <string name="setting_key_mobile_network_download">mobile_network_download</string>
+    <string name="network">网络</string>
+    <string name="sound_effect">音效调节</string>
+    <string name="setting_key_sound_effect">sound_effect</string>
+    <string name="play">播放</string>
+    <string name="help">帮助</string>
+    <string name="setting_key_help_app">help_app</string>
+    <string name="help_app">恢复到默认状态</string>
 </resources>

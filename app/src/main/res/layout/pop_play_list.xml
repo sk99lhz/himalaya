@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_play_list_bg"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/navBarHeight"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@id/layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/play_control_iv"
+                android:layout_width="@dimen/dp_32"
+                android:layout_marginLeft="@dimen/dp_4"
+                android:layout_height="@dimen/dp_32"
+                android:src="@drawable/ic_baseline_subject_24" />
+
+            <TextView
+                android:layout_gravity="center"
+                android:id="@id/play_control_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:text="@string/app_name"
+                android:textColor="@color/main_color_two"
+                android:textSize="@dimen/sp_15" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/play_mode_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@id/order_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/dp_10"
+                android:text="顺序"
+                android:textColor="@color/main_color_two"
+                android:textSize="@dimen/sp_15" />
+
+            <ImageView
+                android:id="@+id/paly_list_order_iv"
+                android:layout_width="@dimen/dp_25"
+                android:layout_marginRight="@dimen/dp_10"
+                android:layout_height="@dimen/dp_25"
+                android:src="@mipmap/play_next" />
+        </LinearLayout>
+    </RelativeLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/play_control_rv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_400"
+        android:overScrollMode="never" />
+
+    <TextView
+        android:id="@+id/play_list_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_10"
+        android:text="关闭"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_16" />
+</LinearLayout>

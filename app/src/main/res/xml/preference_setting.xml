@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/play">
+
+        <Preference
+            android:key="@string/setting_key_sound_effect"
+            android:title="@string/sound_effect" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/help">
+
+        <Preference
+            android:key="@string/setting_key_help_app"
+            android:title="@string/help_app" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
