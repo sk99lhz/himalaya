@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by song
  */
-public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdapter.ViewHolder> {
+public class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.ViewHolder> {
 
     private List<Album> mData = new ArrayList<>();
     private onRecommendItemCallLister Itemlister;
@@ -45,7 +45,7 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
             @Override
             public void onClick(View v) {
                 if (Itemlister != null) {
-                    Itemlister.onItemClick((Integer) v.getTag(),mData.get(position));
+                    Itemlister.onItemClick((Integer) v.getTag(), mData.get(position));
                 }
 
             }

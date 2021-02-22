@@ -29,5 +29,6 @@ public interface IPlayerPresenter extends BaseViewCallBack<IPlayerViewCallBack> 
 
     void revesePlayList();
 
+    void playByAlbumId(long id);
 
 }

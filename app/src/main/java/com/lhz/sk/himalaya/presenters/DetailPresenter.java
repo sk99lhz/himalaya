@@ -1,5 +1,6 @@
 package com.lhz.sk.himalaya.presenters;
 
+import com.lhz.sk.himalaya.api.XimalayApi;
 import com.lhz.sk.himalaya.interfaces.IDetailPresenters;
 import com.lhz.sk.himalaya.interfaces.IDetailViewCallBack;
 import com.lhz.sk.himalaya.interfaces.IRecommendViewCallBack;
@@ -26,6 +27,9 @@ public class DetailPresenter implements IDetailPresenters {
     private List<IDetailViewCallBack> callBacks = new ArrayList<>();
     private Album mAlbum;
     private String TAB = "DetailPresenter";
+    private int mCurrentAlbumId = -1;
+    private int mCurrentPage = 0;
+    private List<Track> mTracks = new ArrayList<>();
 
     public static DetailPresenter getInstance() {
         if (Instance == null) {
@@ -52,38 +56,53 @@ public class DetailPresenter implements IDetailPresenters {
 
     @Override
     public void loadMore() {
-
+        mCurrentPage++;
+        doLaded(true);
     }
 
-    @Override
-    public void getAlbumDetail(int albumId, int page) {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.ALBUM_ID, albumId + "");
-        map.put(DTransferConstants.SORT, "asc");
-        map.put(DTransferConstants.PAGE, page + "");
-        map.put(DTransferConstants.PAGE_SIZE, Contants.COUNT_DETAILS + "");
-        CommonRequest.getTracks(map, new IDataCallBack<TrackList>() {
+    private void doLaded(boolean isdoLaded) {
+        XimalayApi ximalayApi=XimalayApi.getInstance();
+        ximalayApi.getAlbumDetail(new IDataCallBack<TrackList>() {
             @Override
             public void onSuccess(TrackList trackList) {
                 if (trackList != null) {
                     if (callBacks != null) {
+                        if (isdoLaded) {
+                            mTracks.addAll(trackList.getTracks());
+                            for (IDetailViewCallBack callBack : callBacks) {
+                                callBack.onLoadedFinshed(trackList.getTracks().size());
+                            }
+                        } else {
+                            mTracks.addAll(0, trackList.getTracks());
+                        }
+
                         for (IDetailViewCallBack callBack : callBacks) {
-                            callBack.onDetailLoaded(trackList.getTracks());
+                            callBack.onDetailLoaded(mTracks);
                         }
                     }
                 }
-
             }
 
             @Override
             public void onError(int errorCode, String errorMsg) {
+                if (isdoLaded) {
+                    mCurrentPage--;
+                }
                 if (callBacks != null) {
                     for (IDetailViewCallBack callBack : callBacks) {
-                        callBack.onNetworkError(errorCode,errorMsg);
+                        callBack.onNetworkError(errorCode, errorMsg);
                     }
                 }
             }
-        });
+        }, mCurrentAlbumId, mCurrentPage);
+    }
+
+    @Override
+    public void getAlbumDetail(int albumId, int page) {
+        mTracks.clear();
+        this.mCurrentAlbumId = albumId;
+        this.mCurrentPage = page;
+        doLaded(false);
     }
 
     @Override

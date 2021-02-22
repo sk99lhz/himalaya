@@ -2,13 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-
     android:layout_height="match_parent">
-
+<com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+    android:id="@+id/over_scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rd_list"
         android:background="#fff4f4f4"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never" />
+</com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+
 </RelativeLayout>

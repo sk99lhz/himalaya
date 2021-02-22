@@ -49,9 +49,9 @@
             android:paddingTop="@dimen/dp_10"
             android:paddingRight="@dimen/dp_5"
             android:paddingBottom="@dimen/dp_10"
-            android:src="@drawable/selector_play_control_play" />
+            android:src="@mipmap/play_black_normal" />
 
-        <TextView
+        <com.lhz.sk.himalaya.views.RollTextView
             android:id="@+id/play_control_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

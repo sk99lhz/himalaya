@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.lhz.sk.himalaya.bases.BaseActivity;
 import com.lhz.sk.himalaya.interfaces.IPlayerViewCallBack;
 import com.lhz.sk.himalaya.presenters.PlayerPresenter;
 import com.lhz.sk.himalaya.utils.LogUtil;
+import com.lhz.sk.himalaya.utils.ToastUtils;
 import com.lhz.sk.himalaya.views.SobPopWindow;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl;
@@ -89,11 +91,12 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
         initView();
         mPlayerPresenter = PlayerPresenter.getInstance();
         mPlayerPresenter.registerViewCallback(this);
-        iniEvent();
         mPlayerPresenter.getPlayList();
+        iniEvent();
         initBgAnimation();
-
+        updatePlayState(mPlayerPresenter.isPlay());
     }
+
 
     private void initBgAnimation() {
         mValueAnimator = ValueAnimator.ofFloat(1.0f, 0.6f);
@@ -175,7 +178,7 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
                     .apply(RequestOptions.bitmapTransform(new BlurTransformation(25, 15)))
                     .into(mIvbg);
 
-        mPlayerPageAdapter = new PlayerPageAdapter(this);
+
         mPager.setAdapter(mPlayerPageAdapter);
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -304,14 +307,14 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
         mIvPlayModeSwich = findViewById(R.id.ic_repeat);
         mPlayList = findViewById(R.id.ic_music_lists);
         mPopWindow = new SobPopWindow();
+        mPlayerPageAdapter = new PlayerPageAdapter(this);
     }
 
     @Override
     public void onPlayStart() {
         if (mControlBtn != null)
             mControlBtn.setImageResource(R.drawable.ic_baseline_pause_circle_filled_24);
-        mPlayerPageAdapter.setPlay(mPlayerPresenter.isPlay());
-        LogUtil.e("PlayerActivity", mPlayerPresenter.isPlay() + "");
+
     }
 
     @Override
@@ -319,6 +322,11 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
         if (mControlBtn != null)
             mControlBtn.setImageResource(R.drawable.ic_baseline_play_circle_filled_24);
         LogUtil.e("PlayerActivity", mPlayerPresenter.isPlay() + "");
+    }
+    private void updatePlayState(boolean isPlay) {
+        if (mControlBtn != null) {
+            mControlBtn.setImageResource(isPlay ? R.drawable.ic_baseline_pause_circle_filled_24 : R.drawable.ic_baseline_play_circle_filled_24);
+        }
     }
 
     @Override
@@ -360,6 +368,7 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
     }
 
     public void onProgressChange(int current, int total) {
+        LogUtil.e(TAB,"current  "+current+"   total   "+  total);
         mSeekBar.setMax(total);
         String totalTime;
         String currentPosition;
@@ -395,6 +404,10 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
 
     @Override
     public void onTrackUpData(Track track, int playIndex) {
+        if (track == null) {
+           // ToastUtils.showToast(PlayerActivity.this,"没有播放");
+            return;
+        }
         this.mTitle = track.getTrackTitle();
         mUrlLarge = track.getCoverUrlLarge();
         if (mTracktitle != null) {

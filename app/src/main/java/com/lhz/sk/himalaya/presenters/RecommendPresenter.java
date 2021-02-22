@@ -1,5 +1,6 @@
 package com.lhz.sk.himalaya.presenters;
 
+import com.lhz.sk.himalaya.api.XimalayApi;
 import com.lhz.sk.himalaya.interfaces.IRecommendPresenters;
 import com.lhz.sk.himalaya.interfaces.IRecommendViewCallBack;
 import com.lhz.sk.himalaya.utils.Contants;
@@ -20,6 +21,7 @@ import java.util.Map;
 public class RecommendPresenter implements IRecommendPresenters {
     public static RecommendPresenter Instance = null;
     private List<IRecommendViewCallBack> callBacks = new ArrayList<>();
+    private List<Album> mAlbumList = new ArrayList<>();
 
     public static RecommendPresenter getInstance() {
         if (Instance == null) {
@@ -67,9 +69,8 @@ public class RecommendPresenter implements IRecommendPresenters {
     //获取推荐
     private void getRecommend() {
         upLoading();
-        Map<String, String> map = new HashMap<>();
-        map.put(DTransferConstants.LIKE_COUNT, Contants.RD_COUNT + "");
-        CommonRequest.getGuessLikeAlbum(map, new IDataCallBack<GussLikeAlbumList>() {
+        XimalayApi ximalayApi = XimalayApi.getInstance();
+        ximalayApi.getRecommendList(new IDataCallBack<GussLikeAlbumList>() {
             @Override
             public void onSuccess(GussLikeAlbumList gussLikeAlbumList) {
                 if (gussLikeAlbumList != null) {
@@ -86,6 +87,7 @@ public class RecommendPresenter implements IRecommendPresenters {
                                 callBack.onRecommendListData(albumList);
                             }
                         }
+                        mAlbumList = albumList;
                     }
 
                 }
@@ -101,12 +103,17 @@ public class RecommendPresenter implements IRecommendPresenters {
                 }
             }
         });
+
     }
 
-    private  void  upLoading(){
+    private void upLoading() {
         for (IRecommendViewCallBack callBack : callBacks) {
             callBack.onLoading();
         }
+    }
+
+    public List<Album> getCurrentRecommend() {
+        return mAlbumList;
     }
 
 }

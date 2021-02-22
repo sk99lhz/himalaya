@@ -14,4 +14,8 @@ public interface IDetailViewCallBack {
     void onAlbumLoaded(Album album);
 
     void onNetworkError(int errorCode, String errorMsg);
+
+    void onLoadedFinshed(int size);
+
+    void onRefreshFinshed(int size);
 }

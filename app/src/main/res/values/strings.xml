@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Himalaya</string>
-    <string name="click_play_tips_text">继续播放</string>
+    <string name="click_play_tips_text">点击播放</string>
+    <string name="click_play_play_text">正在播放</string>
     <string name="sub_tips_text">订阅</string>
 
     <string-array name="indicator_title">
@@ -25,4 +26,6 @@
     <string name="help">帮助</string>
     <string name="setting_key_help_app">help_app</string>
     <string name="help_app">恢复到默认状态</string>
+    <string name="app_text_m_title">随意听听</string>
+    <string name="app_text_m_signer">喜马拉雅</string>
 </resources>

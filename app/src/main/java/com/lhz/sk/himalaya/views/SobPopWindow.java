@@ -129,7 +129,7 @@ public class SobPopWindow extends PopupWindow {
                 textId = R.string.play_mode_order_text;
                 break;
             case PLAY_MODEL_LIST_LOOP:
-                resId = R.drawable.ic_baseline_repeat_one_24_list;
+                resId = R.drawable.ic_baseline_repeat_24_list;
                 textId = R.string.play_mode_list_play_text;
                 break;
             case PLAY_MODEL_RANDOM:

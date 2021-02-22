@@ -10,9 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.lhz.sk.himalaya.DetailsActivity;
 import com.lhz.sk.himalaya.R;
-import com.lhz.sk.himalaya.adapters.RecommendListAdapter;
+import com.lhz.sk.himalaya.adapters.AlbumListAdapter;
 import com.lhz.sk.himalaya.bases.BaseFragment;
 import com.lhz.sk.himalaya.interfaces.IRecommendViewCallBack;
 import com.lhz.sk.himalaya.presenters.DetailPresenter;
@@ -27,11 +28,11 @@ import java.util.List;
 /**
  * Created by song
  */
-public class RecommendFragment extends BaseFragment implements IRecommendViewCallBack, UILoader.OnRetryClickListener, RecommendListAdapter.onRecommendItemCallLister {
+public class RecommendFragment extends BaseFragment implements IRecommendViewCallBack, UILoader.OnRetryClickListener, AlbumListAdapter.onRecommendItemCallLister {
     private String TAB = "RecommendFragment";
     private View mView;
     private RecyclerView mRecommendList;
-    RecommendListAdapter mRecommendListAdapter;
+    AlbumListAdapter mRecommendListAdapter;
     RecommendPresenter mRecommendPresenter;
     UILoader mUILoader;
 
@@ -44,7 +45,7 @@ public class RecommendFragment extends BaseFragment implements IRecommendViewCal
                 return creatSuccesView(inflater, view);
             }
         };
-        mRecommendListAdapter = new RecommendListAdapter();
+        mRecommendListAdapter = new AlbumListAdapter();
         mRecommendList.setAdapter(mRecommendListAdapter);
         mRecommendPresenter = RecommendPresenter.getInstance();
         // getRecommendData();
@@ -73,7 +74,8 @@ public class RecommendFragment extends BaseFragment implements IRecommendViewCal
                 outRect.right = UIUtil.dip2px(getContext(), 5);
             }
         });
-
+        TwinklingRefreshLayout refreshLayout = mView.findViewById(R.id.over_scroll_view);
+        refreshLayout.setPureScrollModeOn();
         return mView;
     }
 

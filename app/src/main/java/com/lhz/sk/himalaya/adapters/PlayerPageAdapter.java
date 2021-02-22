@@ -32,7 +32,6 @@ public class PlayerPageAdapter extends PagerAdapter {
     private ImageView mImageView;
     private Animation mAnimation;
     private Context mContext;
-    //private static boolean mIsPlay;
     public static View mView;
 
     public PlayerPageAdapter(Context context) {
@@ -59,12 +58,6 @@ public class PlayerPageAdapter extends PagerAdapter {
         Track track = mTrack.get(position);
         String urlLarge = track.getCoverUrlLarge();
         Glide.with(container.getContext()).load(urlLarge).into(mImageView);
-       /* Log.e("instantiateItem", mIsPlay+"");
-        if (mIsPlay) {
-            mImageView.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.play_music_anim));
-        } else {
-            mImageView.clearAnimation();
-        }*/
         return inflate;
     }
 
@@ -85,9 +78,6 @@ public class PlayerPageAdapter extends PagerAdapter {
         notifyDataSetChanged();
     }
 
-    public void setPlay(boolean isPlay) {
-        // this.mIsPlay = isPlay;
 
-    }
 
 }

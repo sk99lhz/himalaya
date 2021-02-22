@@ -3,14 +3,18 @@ package com.lhz.sk.himalaya.presenters;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.lhz.sk.himalaya.api.XimalayApi;
 import com.lhz.sk.himalaya.bases.BaseApplication;
 import com.lhz.sk.himalaya.interfaces.IPlayerPresenter;
 import com.lhz.sk.himalaya.interfaces.IPlayerViewCallBack;
 import com.lhz.sk.himalaya.utils.LogUtil;
+import com.lhz.sk.himalaya.utils.ToastUtils;
+import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.advertis.Advertis;
 import com.ximalaya.ting.android.opensdk.model.advertis.AdvertisList;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
+import com.ximalaya.ting.android.opensdk.model.track.TrackList;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.player.advertis.IXmAdsStatusListener;
 import com.ximalaya.ting.android.opensdk.player.constants.PlayerConstants;
@@ -34,7 +38,7 @@ public class PlayerPresenter implements IPlayerPresenter, IXmAdsStatusListener, 
     public static PlayerPresenter Instance = null;
     private List<IPlayerViewCallBack> callBacks = new ArrayList<>();
     private String TAB = "PlayerPresenter";
-    private List<Track> tracks;
+    private List<Track> mPlayListTracks = new ArrayList<>();
     private XmPlayerManager mPlayerManager;
     private boolean mPlayListSet = false;
     private Track mTrack;
@@ -51,6 +55,8 @@ public class PlayerPresenter implements IPlayerPresenter, IXmAdsStatusListener, 
     public static final String PLAY_MODE_SP_KEY = "PLAY_MODE_SP_KEY";
 
     private XmPlayListControl.PlayMode mCurrentPlayMode = PLAY_MODEL_LIST;
+    private int mCurrentPosition = 0;
+    private int mCurrentDuration = 0;
 
     private int getIntByPlayMode(XmPlayListControl.PlayMode mode) {
         switch (mode) {
@@ -79,8 +85,10 @@ public class PlayerPresenter implements IPlayerPresenter, IXmAdsStatusListener, 
     }
 
     public void setPlayList(List<Track> tracks, int index) {
+        this.mPlayListTracks.clear();
+        mPlayListTracks.addAll(tracks);
         if (mPlayerManager != null) {
-            mPlayerManager.setPlayList(tracks, index);
+            mPlayerManager.setPlayList(mPlayListTracks, index);
             mPlayListSet = true;
             mTrack = tracks.get(index);
             mCurrentIndex = index;
@@ -154,9 +162,10 @@ public class PlayerPresenter implements IPlayerPresenter, IXmAdsStatusListener, 
     @Override
     public void getPlayList() {
         if (mPlayerManager != null) {
-            List<Track> playList = mPlayerManager.getPlayList();
+            this.mPlayListTracks.clear();
+            mPlayListTracks.addAll(mPlayerManager.getPlayList());
             for (IPlayerViewCallBack callBack : callBacks) {
-                callBack.onListLoaded(playList);
+                callBack.onListLoaded(mPlayListTracks);
             }
         }
 
@@ -198,15 +207,53 @@ public class PlayerPresenter implements IPlayerPresenter, IXmAdsStatusListener, 
         }
     }
 
+    @Override
+    public void playByAlbumId(long id) {
+        XimalayApi ximalayApi = XimalayApi.getInstance();
+        ximalayApi.getAlbumDetail(new IDataCallBack<TrackList>() {
+            @Override
+            public void onSuccess(TrackList trackList) {
+                List<Track> tracks = trackList.getTracks();
+                mPlayListTracks.clear();
+                mPlayListTracks.addAll(trackList.getTracks());
+                if (tracks != null && tracks.size() > 0) {
+                    mPlayerManager.setPlayList(tracks, 0);
+                    mPlayListSet = true;
+                    mTrack = tracks.get(0);
+                    mCurrentIndex = 0;
+                    for (IPlayerViewCallBack callBack : callBacks) {
+                        callBack.onListLoaded(mPlayListTracks);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                ToastUtils.showToast(BaseApplication.getContext(), i + s);
+            }
+        }, id, 1);
+    }
+
 
     @Override
     public void registerViewCallback(IPlayerViewCallBack callBack) {
         callBack.onTrackUpData(mTrack, mCurrentIndex);
+        handelPalyStae(callBack);
+        callBack.onProgressChange(mCurrentPosition, mCurrentDuration);
         int anInt = mPlayMode.getInt(PLAY_MODE_SP_KEY, PLAY_MODEL_LIST_INT);
         mCurrentPlayMode = getModeByIntPlay(anInt);
         callBack.onPlayModeChange(mCurrentPlayMode);
         if (!callBacks.contains(callBack)) {
             callBacks.add(callBack);
+        }
+    }
+
+    private void handelPalyStae(IPlayerViewCallBack callBack) {
+        int status = mPlayerManager.getPlayerStatus();
+        if (PlayerConstants.STATE_STARTED == status) {
+            callBack.onPlayStart();
+        } else {
+            callBack.onPlayPause();
         }
     }
 
@@ -340,6 +387,8 @@ public class PlayerPresenter implements IPlayerPresenter, IXmAdsStatusListener, 
 
     @Override
     public void onPlayProgress(int i, int i1) {
+        this.mCurrentPosition = i;
+        this.mCurrentDuration = i1;
         for (IPlayerViewCallBack callBack : callBacks) {
             callBack.onProgressChange(i, i1);
         }
@@ -352,4 +401,7 @@ public class PlayerPresenter implements IPlayerPresenter, IXmAdsStatusListener, 
     }
 
 
+    public boolean isPlayList() {
+        return mPlayListSet;
+    }
 }

@@ -4,12 +4,12 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 
-import com.lhz.sk.himalaya.utils.LogUtil;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.datatrasfer.DeviceInfoProviderDefault;
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDeviceInfoProvider;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
+import com.ximalaya.ting.android.opensdk.player.service.XmPlayerConfig;
 
 /**
  * Created by song
@@ -34,7 +34,9 @@ public class BaseApplication extends Application {
             mXanadu.setPackid("com.ximalaya.qunfeng");
             mXanadu.init(this, mAppSecret, getDeviceInfoProvider(this));
         }
+        XmPlayerManager.getInstance(this).setBreakpointResume(false);
         XmPlayerManager.getInstance(this).init();
+        XmPlayerConfig.monitorNetWorkChangeAndTryPlay = true;
         sHandler = new Handler();
         mContext = getApplicationContext();
     }
