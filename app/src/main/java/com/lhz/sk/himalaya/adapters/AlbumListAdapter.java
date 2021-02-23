@@ -1,5 +1,6 @@
 package com.lhz.sk.himalaya.adapters;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +23,10 @@ import java.util.List;
 public class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.ViewHolder> {
 
     private List<Album> mData = new ArrayList<>();
-    private onRecommendItemCallLister Itemlister;
+    private onAlbumItemCallLister Itemlister;
 
-    public void setMonRecommendItemCallLister(onRecommendItemCallLister monRecommendItemCallLister) {
-        this.Itemlister = monRecommendItemCallLister;
+    public void setonAlbumItemCallLister(onAlbumItemCallLister onAlbumItemCallLister) {
+        this.Itemlister = onAlbumItemCallLister;
     }
 
     @NonNull
@@ -48,6 +49,14 @@ public class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.View
                     Itemlister.onItemClick((Integer) v.getTag(), mData.get(position));
                 }
 
+            }
+        });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (longItemCallLister != null)
+                    longItemCallLister.onLongItemClick(mData.get(position));
+                return true;
             }
         });
     }
@@ -85,11 +94,26 @@ public class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.View
 
             albumCountSize.setText(album.getPlayCount() + "");
             albumPlayCount.setText(album.getIncludeTrackCount() + "");
-            Glide.with(itemView.getContext()).load(album.getCoverUrlLarge()).into(albumCover);
+            if (!TextUtils.isEmpty(album.getCoverUrlLarge())) {
+                Glide.with(itemView.getContext()).load(album.getCoverUrlLarge()).into(albumCover);
+            } else {
+                Glide.with(itemView.getContext()).load(R.mipmap.default_albm).into(albumCover);
+            }
+
         }
     }
 
-    public interface onRecommendItemCallLister {
+    public onAlbumLongItemCallLister longItemCallLister;
+
+    public void setonAlbumLongItemCallLister(onAlbumLongItemCallLister longItemCallLister) {
+        this.longItemCallLister = longItemCallLister;
+    }
+
+    public interface onAlbumItemCallLister {
         void onItemClick(int position, Album album);
+    }
+
+    public interface onAlbumLongItemCallLister {
+        void onLongItemClick(Album album);
     }
 }

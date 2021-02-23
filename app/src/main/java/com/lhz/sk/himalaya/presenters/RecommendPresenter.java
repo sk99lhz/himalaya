@@ -1,19 +1,14 @@
 package com.lhz.sk.himalaya.presenters;
 
-import com.lhz.sk.himalaya.api.XimalayApi;
+import com.lhz.sk.himalaya.data.api.MyXimalayaApi;
 import com.lhz.sk.himalaya.interfaces.IRecommendPresenters;
 import com.lhz.sk.himalaya.interfaces.IRecommendViewCallBack;
-import com.lhz.sk.himalaya.utils.Contants;
-import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
-import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.album.GussLikeAlbumList;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by song
@@ -69,7 +64,7 @@ public class RecommendPresenter implements IRecommendPresenters {
     //获取推荐
     private void getRecommend() {
         upLoading();
-        XimalayApi ximalayApi = XimalayApi.getInstance();
+        MyXimalayaApi ximalayApi = MyXimalayaApi.getInstance();
         ximalayApi.getRecommendList(new IDataCallBack<GussLikeAlbumList>() {
             @Override
             public void onSuccess(GussLikeAlbumList gussLikeAlbumList) {

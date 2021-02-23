@@ -27,8 +27,11 @@ import com.lhz.sk.himalaya.adapters.DetailListAdapter;
 import com.lhz.sk.himalaya.bases.BaseActivity;
 import com.lhz.sk.himalaya.interfaces.IDetailViewCallBack;
 import com.lhz.sk.himalaya.interfaces.IPlayerViewCallBack;
+import com.lhz.sk.himalaya.interfaces.ISubscriptionViewCallBack;
 import com.lhz.sk.himalaya.presenters.DetailPresenter;
 import com.lhz.sk.himalaya.presenters.PlayerPresenter;
+import com.lhz.sk.himalaya.presenters.SubscriptionPresenter;
+import com.lhz.sk.himalaya.utils.LogUtil;
 import com.lhz.sk.himalaya.utils.ToastUtils;
 import com.lhz.sk.himalaya.views.RoundRectImageView;
 import com.lhz.sk.himalaya.views.UILoader;
@@ -43,8 +46,9 @@ import java.util.List;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
-public class DetailsActivity extends BaseActivity implements IDetailViewCallBack, DetailListAdapter.onDetailItemCallLister, IPlayerViewCallBack {
+public class DetailsActivity extends BaseActivity implements IDetailViewCallBack, DetailListAdapter.onDetailItemCallLister, IPlayerViewCallBack, ISubscriptionViewCallBack {
 
+    private static final String TAB = "DetailsActivity";
     private ImageView mLargeCover;
     private RoundRectImageView mSmallCover;
     private TextView mAlbumTitle;
@@ -64,6 +68,9 @@ public class DetailsActivity extends BaseActivity implements IDetailViewCallBack
     private static int mCurrentIndex = 0;
     private TwinklingRefreshLayout mRefreslayout;
     private String mTitle;
+    private TextView mSubBtn;
+    private SubscriptionPresenter mSubscriptionPresenter;
+    private Album mCurrentAlbum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +84,29 @@ public class DetailsActivity extends BaseActivity implements IDetailViewCallBack
         mPlayerPresenter = PlayerPresenter.getInstance();
         mPlayerPresenter.registerViewCallback(this);
         updatePlayState(mPlayerPresenter.isPlay());
+        mSubscriptionPresenter = SubscriptionPresenter.getInstance();
+        mSubscriptionPresenter.getSubscription();
+        mSubscriptionPresenter.registerViewCallback(this);
         initListener();
+        updateSubState();
+    }
+
+    private void updateSubState() {
+
+        if (mSubscriptionPresenter != null) {
+            boolean sub = mSubscriptionPresenter.isSub(mCurrentAlbum);
+            mSubBtn.setText(sub ? R.string.cancel_sub_text : R.string.sub_text);
+        }
+        mSubBtn.setOnClickListener(v -> {
+            if (mSubscriptionPresenter != null) {
+                boolean sub = mSubscriptionPresenter.isSub(mCurrentAlbum);
+                if (sub) {
+                    mSubscriptionPresenter.deleteSubscription(mCurrentAlbum);
+                } else {
+                    mSubscriptionPresenter.addSubscription(mCurrentAlbum);
+                }
+            }
+        });
     }
 
 
@@ -104,6 +133,7 @@ public class DetailsActivity extends BaseActivity implements IDetailViewCallBack
             }
         });
 
+
     }
 
     @Override
@@ -113,6 +143,8 @@ public class DetailsActivity extends BaseActivity implements IDetailViewCallBack
             mPresenter.unregisterViewCallback(this);
         if (mPlayerPresenter != null)
             mPlayerPresenter.unregisterViewCallback(this);
+        if (mSubscriptionPresenter != null)
+            mSubscriptionPresenter.unregisterViewCallback(this);
     }
 
     private void initView() {
@@ -145,6 +177,7 @@ public class DetailsActivity extends BaseActivity implements IDetailViewCallBack
         mMFlDetail.removeAllViews();
         mMFlDetail.addView(mUiLoader);
         mDetailListAdapter.setItemCallLister(this);
+        mSubBtn = findViewById(R.id.detail_sub_btn);
 
 
     }
@@ -166,9 +199,9 @@ public class DetailsActivity extends BaseActivity implements IDetailViewCallBack
                 outRect.left = UIUtil.dip2px(DetailsActivity.this, 5);
             }
         });
-        BezierLayout bezierLayout=new BezierLayout(this);
-        mRefreslayout.setHeaderView(bezierLayout);
-         mRefreslayout.setBottomHeight(140);
+        //BezierLayout bezierLayout=new BezierLayout(this);
+        //mRefreslayout.setHeaderView(bezierLayout);
+        //mRefreslayout.setBottomHeight(140);
         mRefreslayout.setOnRefreshListener(new RefreshListenerAdapter() {
             @Override
             public void onRefresh(TwinklingRefreshLayout refreshLayout) {
@@ -209,6 +242,7 @@ public class DetailsActivity extends BaseActivity implements IDetailViewCallBack
 
     @Override
     public void onAlbumLoaded(Album album) {
+        this.mCurrentAlbum = album;
         mAlbumId = album.getId();
         mPresenter.getAlbumDetail((int) mAlbumId, mCurrent);
         if (mUiLoader != null) {
@@ -240,10 +274,10 @@ public class DetailsActivity extends BaseActivity implements IDetailViewCallBack
 
     @Override
     public void onLoadedFinshed(int size) {
-        if (size>0){
-            ToastUtils.showToast(DetailsActivity.this,"成功加载"+size+"条");
-        }else {
-            ToastUtils.showToast(DetailsActivity.this,"没有更多数据");
+        if (size > 0) {
+            ToastUtils.showToast(DetailsActivity.this, "成功加载" + size + "条");
+        } else {
+            ToastUtils.showToast(DetailsActivity.this, "没有更多数据");
         }
     }
 
@@ -342,5 +376,40 @@ public class DetailsActivity extends BaseActivity implements IDetailViewCallBack
     @Override
     public void updateListOrder(boolean isOrder) {
 
+    }
+
+    @Override
+    public void onAddResult(boolean isSuccess) {
+        if (mSubBtn != null) {
+            if (isSuccess) {
+                mSubBtn.setText(R.string.cancel_sub_text);
+            }
+        }
+        String string = isSuccess ? "订阅成功" : "订阅失败";
+        ToastUtils.showToast(DetailsActivity.this, string);
+
+    }
+
+    @Override
+    public void onDeleteResult(boolean isSuccess) {
+        if (mSubBtn != null) {
+            if (isSuccess) {
+                mSubBtn.setText(R.string.sub_text);
+            }
+        }
+        String string = isSuccess ? "删除成功" : "删除失败";
+        ToastUtils.showToast(DetailsActivity.this, string);
+    }
+
+    @Override
+    public void onSubscritpionsLoad(List<Album> albums) {
+        for (Album album : albums) {
+            LogUtil.e(TAB, "albums=====" + album.getAlbumTitle());
+        }
+    }
+
+    @Override
+    public void onSubToMany() {
+        ToastUtils.showToast(this,"订阅不超过一百！");
     }
 }

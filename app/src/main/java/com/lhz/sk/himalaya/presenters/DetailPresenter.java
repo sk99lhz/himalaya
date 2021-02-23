@@ -1,22 +1,15 @@
 package com.lhz.sk.himalaya.presenters;
 
-import com.lhz.sk.himalaya.api.XimalayApi;
+import com.lhz.sk.himalaya.data.api.MyXimalayaApi;
 import com.lhz.sk.himalaya.interfaces.IDetailPresenters;
 import com.lhz.sk.himalaya.interfaces.IDetailViewCallBack;
-import com.lhz.sk.himalaya.interfaces.IRecommendViewCallBack;
-import com.lhz.sk.himalaya.utils.Contants;
-import com.lhz.sk.himalaya.utils.LogUtil;
-import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
-import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.model.track.TrackList;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by song
@@ -61,7 +54,7 @@ public class DetailPresenter implements IDetailPresenters {
     }
 
     private void doLaded(boolean isdoLaded) {
-        XimalayApi ximalayApi=XimalayApi.getInstance();
+        MyXimalayaApi ximalayApi= MyXimalayaApi.getInstance();
         ximalayApi.getAlbumDetail(new IDataCallBack<TrackList>() {
             @Override
             public void onSuccess(TrackList trackList) {

@@ -81,6 +81,7 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
     private ValueAnimator mValueAnimator;
     private ValueAnimator mOutValueAnimator;
     private static int ANIMATOR_DURATION = 400;
+    private int mCurrentplayIndex=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +92,7 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
         initView();
         mPlayerPresenter = PlayerPresenter.getInstance();
         mPlayerPresenter.registerViewCallback(this);
-        mPlayerPresenter.getPlayList();
+       // mPlayerPresenter.getPlayList();
         iniEvent();
         initBgAnimation();
         updatePlayState(mPlayerPresenter.isPlay());
@@ -404,6 +405,7 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
 
     @Override
     public void onTrackUpData(Track track, int playIndex) {
+        this.mCurrentplayIndex=playIndex;
         if (track == null) {
            // ToastUtils.showToast(PlayerActivity.this,"没有播放");
             return;
@@ -414,7 +416,7 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
             mTracktitle.setText(track.getTrackTitle());
         }
         if (mPager != null) {
-            mPager.setCurrentItem(playIndex, true);
+           mPager.setCurrentItem(playIndex, true);
         }
 
         if (mPopWindow != null) {

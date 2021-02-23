@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.lhz.sk.himalaya.R;
 import com.lhz.sk.himalaya.bases.BaseApplication;
@@ -78,6 +79,7 @@ public abstract class UILoader extends FrameLayout {
             addView(mEmptyView);
         }
         mEmptyView.setVisibility(mCurrentStatus == UIStatus.EMPTY ? VISIBLE : GONE);
+
 
 
     }

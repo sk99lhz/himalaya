@@ -3,10 +3,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+        android:id="@+id/search_more"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            />
+    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_rv"
+        android:id="@+id/search_recommend_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never" />
+        android:overScrollMode="never"
+        android:visibility="gone" />
+
+    <com.lhz.sk.himalaya.views.FlowTextLayout
+        android:id="@+id/flow_text_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp_4" />
 
 </FrameLayout>

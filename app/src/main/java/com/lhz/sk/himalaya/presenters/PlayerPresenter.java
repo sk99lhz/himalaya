@@ -3,7 +3,7 @@ package com.lhz.sk.himalaya.presenters;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.lhz.sk.himalaya.api.XimalayApi;
+import com.lhz.sk.himalaya.data.api.MyXimalayaApi;
 import com.lhz.sk.himalaya.bases.BaseApplication;
 import com.lhz.sk.himalaya.interfaces.IPlayerPresenter;
 import com.lhz.sk.himalaya.interfaces.IPlayerViewCallBack;
@@ -38,7 +38,6 @@ public class PlayerPresenter implements IPlayerPresenter, IXmAdsStatusListener, 
     public static PlayerPresenter Instance = null;
     private List<IPlayerViewCallBack> callBacks = new ArrayList<>();
     private String TAB = "PlayerPresenter";
-    private List<Track> mPlayListTracks = new ArrayList<>();
     private XmPlayerManager mPlayerManager;
     private boolean mPlayListSet = false;
     private Track mTrack;
@@ -85,10 +84,8 @@ public class PlayerPresenter implements IPlayerPresenter, IXmAdsStatusListener, 
     }
 
     public void setPlayList(List<Track> tracks, int index) {
-        this.mPlayListTracks.clear();
-        mPlayListTracks.addAll(tracks);
         if (mPlayerManager != null) {
-            mPlayerManager.setPlayList(mPlayListTracks, index);
+            mPlayerManager.setPlayList(tracks, index);
             mPlayListSet = true;
             mTrack = tracks.get(index);
             mCurrentIndex = index;
@@ -162,10 +159,8 @@ public class PlayerPresenter implements IPlayerPresenter, IXmAdsStatusListener, 
     @Override
     public void getPlayList() {
         if (mPlayerManager != null) {
-            this.mPlayListTracks.clear();
-            mPlayListTracks.addAll(mPlayerManager.getPlayList());
             for (IPlayerViewCallBack callBack : callBacks) {
-                callBack.onListLoaded(mPlayListTracks);
+                callBack.onListLoaded((mPlayerManager.getPlayList()));
             }
         }
 
@@ -209,20 +204,18 @@ public class PlayerPresenter implements IPlayerPresenter, IXmAdsStatusListener, 
 
     @Override
     public void playByAlbumId(long id) {
-        XimalayApi ximalayApi = XimalayApi.getInstance();
+        MyXimalayaApi ximalayApi = MyXimalayaApi.getInstance();
         ximalayApi.getAlbumDetail(new IDataCallBack<TrackList>() {
             @Override
             public void onSuccess(TrackList trackList) {
                 List<Track> tracks = trackList.getTracks();
-                mPlayListTracks.clear();
-                mPlayListTracks.addAll(trackList.getTracks());
                 if (tracks != null && tracks.size() > 0) {
                     mPlayerManager.setPlayList(tracks, 0);
                     mPlayListSet = true;
                     mTrack = tracks.get(0);
                     mCurrentIndex = 0;
                     for (IPlayerViewCallBack callBack : callBacks) {
-                        callBack.onListLoaded(mPlayListTracks);
+                        callBack.onListLoaded(trackList.getTracks());
                     }
                 }
             }
@@ -237,15 +230,17 @@ public class PlayerPresenter implements IPlayerPresenter, IXmAdsStatusListener, 
 
     @Override
     public void registerViewCallback(IPlayerViewCallBack callBack) {
-        callBack.onTrackUpData(mTrack, mCurrentIndex);
-        handelPalyStae(callBack);
-        callBack.onProgressChange(mCurrentPosition, mCurrentDuration);
-        int anInt = mPlayMode.getInt(PLAY_MODE_SP_KEY, PLAY_MODEL_LIST_INT);
-        mCurrentPlayMode = getModeByIntPlay(anInt);
-        callBack.onPlayModeChange(mCurrentPlayMode);
         if (!callBacks.contains(callBack)) {
             callBacks.add(callBack);
         }
+        getPlayList();
+        callBack.onTrackUpData(mTrack, mCurrentIndex);
+        callBack.onProgressChange(mCurrentPosition, mCurrentDuration);
+        handelPalyStae(callBack);
+        int anInt = mPlayMode.getInt(PLAY_MODE_SP_KEY, PLAY_MODEL_LIST_INT);
+        mCurrentPlayMode = getModeByIntPlay(anInt);
+        callBack.onPlayModeChange(mCurrentPlayMode);
+
     }
 
     private void handelPalyStae(IPlayerViewCallBack callBack) {
@@ -357,10 +352,13 @@ public class PlayerPresenter implements IPlayerPresenter, IXmAdsStatusListener, 
     }
 
     @Override
-    public void onSoundSwitch(PlayableModel playableModel, PlayableModel playableModel1) {
+    public void onSoundSwitch(PlayableModel lastModel, PlayableModel curModel) {
+
         mCurrentIndex = mPlayerManager.getCurrentIndex();
-        if (playableModel1 instanceof Track) {
-            Track track = (Track) playableModel1;
+        if (curModel instanceof Track) {
+            Track track = (Track) curModel;
+            HistoryPresenters historyPresenters = HistoryPresenters.getInstance();
+            historyPresenters.addHistory(track);
             if (callBacks != null) {
                 for (IPlayerViewCallBack callBack : callBacks) {
                     callBack.onTrackUpData(track, mCurrentIndex);

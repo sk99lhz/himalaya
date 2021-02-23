@@ -1,4 +1,4 @@
-package com.lhz.sk.himalaya.api;
+package com.lhz.sk.himalaya.data.api;
 
 import com.lhz.sk.himalaya.utils.Contants;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
@@ -16,19 +16,19 @@ import java.util.Map;
 /**
  * Created by song
  */
-public class XimalayApi {
+public class MyXimalayaApi {
 
-    public static XimalayApi Instance;
+    public static MyXimalayaApi Instance;
 
     private void XimalayApi() {
 
     }
 
-    public static XimalayApi getInstance() {
+    public static MyXimalayaApi getInstance() {
         if (Instance == null) {
-            synchronized (XimalayApi.class) {
+            synchronized (MyXimalayaApi.class) {
                 if (Instance == null)
-                    Instance = new XimalayApi();
+                    Instance = new MyXimalayaApi();
             }
         }
         return Instance;

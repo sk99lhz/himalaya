@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Created by song
  */
-public class RecommendFragment extends BaseFragment implements IRecommendViewCallBack, UILoader.OnRetryClickListener, AlbumListAdapter.onRecommendItemCallLister {
+public class RecommendFragment extends BaseFragment implements IRecommendViewCallBack, UILoader.OnRetryClickListener, AlbumListAdapter.onAlbumItemCallLister {
     private String TAB = "RecommendFragment";
     private View mView;
     private RecyclerView mRecommendList;
@@ -39,12 +39,14 @@ public class RecommendFragment extends BaseFragment implements IRecommendViewCal
     @Override
     protected View onSubViewLoaded(LayoutInflater inflater, ViewGroup container) {
 
-        mUILoader = new UILoader(getContext()) {
-            @Override
-            protected View getSuccessView(ViewGroup view) {
-                return creatSuccesView(inflater, view);
-            }
-        };
+        if (mUILoader==null){
+            mUILoader = new UILoader(container.getContext()) {
+                @Override
+                protected View getSuccessView(ViewGroup view) {
+                    return creatSuccesView(inflater, view);
+                }
+            };
+        }
         mRecommendListAdapter = new AlbumListAdapter();
         mRecommendList.setAdapter(mRecommendListAdapter);
         mRecommendPresenter = RecommendPresenter.getInstance();
@@ -55,7 +57,7 @@ public class RecommendFragment extends BaseFragment implements IRecommendViewCal
             ((ViewGroup) mUILoader.getParent()).removeView(mUILoader);
         }
         mUILoader.setOnRetryClickListener(this);
-        mRecommendListAdapter.setMonRecommendItemCallLister(this);
+        mRecommendListAdapter.setonAlbumItemCallLister(this);
         return mUILoader;
     }
 

@@ -21,22 +21,36 @@
             android:layout_marginStart="@dimen/dp_2"
             android:src="@mipmap/back" />
 
-        <EditText
-            android:id="@+id/search_et"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginStart="@dimen/dp_4"
             android:layout_marginEnd="@dimen/dp_45"
-            android:layout_toRightOf="@+id/back_Iv"
-            android:background="@drawable/shape_edit_text_bg"
-            android:hint="请输入你要搜索的内容"
-            android:paddingLeft="@dimen/dp_8"
-            android:singleLine="true"
-            android:textColor="@color/main_color"
-            android:textSize="@dimen/sp_16">
+            android:layout_toRightOf="@+id/back_Iv">
 
-        </EditText>
+            <EditText
+                android:id="@+id/search_et"
+                android:paddingEnd="@dimen/dp_26"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_edit_text_bg"
+                android:hint="请输入你要搜索的内容"
+                android:paddingLeft="@dimen/dp_8"
+                android:singleLine="true"
+                android:textColor="@color/main_color"
+                android:textSize="@dimen/sp_16" />
+
+            <ImageView
+                android:id="@+id/delete_iv"
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_24"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_marginEnd="@dimen/dp_4"
+                android:src="@mipmap/delete" />
+        </RelativeLayout>
+
 
         <TextView
             android:id="@+id/search_tv"
@@ -58,8 +72,7 @@
         android:id="@+id/content_fl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dp_46"
-        android:background="@color/main_color">
+        android:layout_marginTop="@dimen/dp_46">
 
     </FrameLayout>
 </FrameLayout>
