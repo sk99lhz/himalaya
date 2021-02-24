@@ -322,7 +322,6 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
     public void onPlayPause() {
         if (mControlBtn != null)
             mControlBtn.setImageResource(R.drawable.ic_baseline_play_circle_filled_24);
-        LogUtil.e("PlayerActivity", mPlayerPresenter.isPlay() + "");
     }
     private void updatePlayState(boolean isPlay) {
         if (mControlBtn != null) {
@@ -335,7 +334,6 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
         if (mControlBtn != null)
             mControlBtn.setImageResource(R.drawable.ic_baseline_play_circle_filled_24);
 
-        LogUtil.e("PlayerActivity", mPlayerPresenter.isPlay() + "");
     }
 
     @Override

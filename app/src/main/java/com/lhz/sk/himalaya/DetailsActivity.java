@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +21,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
-import com.lcodecore.tkrefreshlayout.header.bezierlayout.BezierLayout;
 import com.lhz.sk.himalaya.adapters.DetailListAdapter;
 import com.lhz.sk.himalaya.bases.BaseActivity;
 import com.lhz.sk.himalaya.interfaces.IDetailViewCallBack;
@@ -40,13 +38,12 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl;
 
 import net.lucode.hackware.magicindicator.buildins.UIUtil;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.BezierPagerIndicator;
 
 import java.util.List;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
-public class DetailsActivity extends BaseActivity implements IDetailViewCallBack, DetailListAdapter.onDetailItemCallLister, IPlayerViewCallBack, ISubscriptionViewCallBack {
+public class DetailsActivity extends BaseActivity implements IDetailViewCallBack, DetailListAdapter.onItemCallLister, IPlayerViewCallBack, ISubscriptionViewCallBack {
 
     private static final String TAB = "DetailsActivity";
     private ImageView mLargeCover;

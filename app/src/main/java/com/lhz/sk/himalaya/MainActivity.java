@@ -94,7 +94,7 @@ public class MainActivity extends BaseActivity implements IPlayerViewCallBack {
     }
 
     private void initEvent() {
-        mIndicatorAdapter.setOnIndicatorTabClickListener(index -> vp_main.setCurrentItem(index));
+        mIndicatorAdapter.setOnIndicatorTabClickListener(index -> vp_main.setCurrentItem(index,false));
         mPlaymain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

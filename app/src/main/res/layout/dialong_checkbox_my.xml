@@ -10,12 +10,22 @@
         android:background="@drawable/shape_comfirm_dialog_bg">
 
         <TextView
+            android:id="@+id/dialog_text"
             android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_38"
             android:layout_centerHorizontal="true"
-            android:text="取消订阅该专辑吗"
+            android:text="删除当前历史记录吗"
             android:textSize="@dimen/sp_20" />
+
+        <CheckBox
+            android:id="@+id/dialog_checkbox"
+            android:layout_below="@+id/dialog_text"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_width="wrap_content"
+            android:text="清除所有历史记录"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:id="@+id/dialog_container"
@@ -31,7 +41,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="取消订阅"
+                android:text="取消"
                 android:textSize="@dimen/sp_18" />
 
             <View
@@ -46,7 +56,7 @@
                 android:gravity="center"
                 android:textColor="@color/main_color"
                 android:layout_weight="1"
-                android:text="我在想想"
+                android:text="确定"
                 android:textSize="@dimen/sp_18" />
         </LinearLayout>
 

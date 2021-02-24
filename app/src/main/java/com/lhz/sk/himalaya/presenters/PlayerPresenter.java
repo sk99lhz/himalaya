@@ -48,7 +48,7 @@ public class PlayerPresenter implements IPlayerPresenter, IXmAdsStatusListener, 
     public static final int PLAY_MODEL_LIST_LOOP_INT = 1;
     public static final int PLAY_MODEL_RANDOM_INT = 2;
     public static final int PLAY_MODEL_SINGLE_LOOP_INT = 3;
-
+    private List<Track>  mCurrentTrack=new ArrayList<>();
     public static final String PLAY_MODE_SP_NAME = "PLAY_MODE_SP_NAME";
 
     public static final String PLAY_MODE_SP_KEY = "PLAY_MODE_SP_KEY";
@@ -160,7 +160,7 @@ public class PlayerPresenter implements IPlayerPresenter, IXmAdsStatusListener, 
     public void getPlayList() {
         if (mPlayerManager != null) {
             for (IPlayerViewCallBack callBack : callBacks) {
-                callBack.onListLoaded((mPlayerManager.getPlayList()));
+                callBack.onListLoaded(mPlayerManager.getPlayList());
             }
         }
 
@@ -240,7 +240,6 @@ public class PlayerPresenter implements IPlayerPresenter, IXmAdsStatusListener, 
         int anInt = mPlayMode.getInt(PLAY_MODE_SP_KEY, PLAY_MODEL_LIST_INT);
         mCurrentPlayMode = getModeByIntPlay(anInt);
         callBack.onPlayModeChange(mCurrentPlayMode);
-
     }
 
     private void handelPalyStae(IPlayerViewCallBack callBack) {

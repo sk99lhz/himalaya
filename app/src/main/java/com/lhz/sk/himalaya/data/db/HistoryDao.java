@@ -38,6 +38,7 @@ public class HistoryDao implements IHistoryDao {
             boolean isaddHistory = false;
             try {
                 db = mXimalayaDbHelper.getWritableDatabase();
+                db.delete(Contants.HISTORY_TB_NAME, Contants.HISTORY_TRACK_ID + "=?", new String[]{track.getDataId() + ""});
                 db.beginTransaction();
                 ContentValues values = new ContentValues();
                 values.put(Contants.HISTORY_TRACK_ID, track.getDataId());

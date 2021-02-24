@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,13 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.lhz.sk.himalaya.PlayerActivity;
 import com.lhz.sk.himalaya.R;
-import com.lhz.sk.himalaya.adapters.AlbumListAdapter;
 import com.lhz.sk.himalaya.adapters.DetailListAdapter;
 import com.lhz.sk.himalaya.bases.BaseApplication;
 import com.lhz.sk.himalaya.bases.BaseFragment;
 import com.lhz.sk.himalaya.interfaces.IHistoryViewCallBack;
 import com.lhz.sk.himalaya.presenters.HistoryPresenters;
 import com.lhz.sk.himalaya.presenters.PlayerPresenter;
+import com.lhz.sk.himalaya.views.MyCheckBoxDialog;
 import com.lhz.sk.himalaya.views.UILoader;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 
@@ -31,13 +32,17 @@ import java.util.List;
 /**
  * Created by song
  */
-public class HistoryFragment extends BaseFragment implements IHistoryViewCallBack, DetailListAdapter.onDetailItemCallLister {
+public class HistoryFragment extends BaseFragment implements
+        IHistoryViewCallBack, DetailListAdapter.onItemCallLister,
+        DetailListAdapter.onLongItemCallLister,
+        MyCheckBoxDialog.OnDialogActionCilckListener {
 
     private UILoader mUiLoader;
     private RecyclerView mRecyclerView;
     private TwinklingRefreshLayout mTwinklingRefreshLayout;
     private DetailListAdapter mDetailListAdapter;
     private HistoryPresenters mHistoryPresenters;
+    private Track mCurrentClickHistorItem = null;
 
 
     @Override
@@ -48,6 +53,14 @@ public class HistoryFragment extends BaseFragment implements IHistoryViewCallBac
                 @Override
                 protected View getSuccessView(ViewGroup group) {
                     return createSuccessView(container);
+                }
+
+                @Override
+                protected View getEmptyView() {
+                    View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_empty_view, this, false);
+                    TextView textView = view.findViewById(R.id.tv_enty);
+                    textView.setText("没有历史记录！");
+                    return view;
                 }
             };
 
@@ -81,6 +94,7 @@ public class HistoryFragment extends BaseFragment implements IHistoryViewCallBac
                 outRect.right = UIUtil.dip2px(getContext(), 5);
             }
         });
+        mDetailListAdapter.setLongItemCallLister(this);
         mDetailListAdapter.setItemCallLister(this);
         if (mUiLoader != null) {
             mUiLoader.updateStatus(UILoader.UIStatus.LOADING);
@@ -90,8 +104,12 @@ public class HistoryFragment extends BaseFragment implements IHistoryViewCallBac
 
     @Override
     public void HistoryLoaded(List<Track> tracks) {
-        mDetailListAdapter.setData(tracks);
-        mUiLoader.updateStatus(UILoader.UIStatus.SUCCESS);
+        if (tracks.size() == 0 || tracks == null) {
+            mUiLoader.updateStatus(UILoader.UIStatus.EMPTY);
+        } else {
+            mDetailListAdapter.setData(tracks);
+            mUiLoader.updateStatus(UILoader.UIStatus.SUCCESS);
+        }
     }
 
     @Override
@@ -107,5 +125,30 @@ public class HistoryFragment extends BaseFragment implements IHistoryViewCallBac
         PlayerPresenter presenter = PlayerPresenter.getInstance();
         presenter.setPlayList(album, position);
         startActivity(new Intent(getActivity(), PlayerActivity.class));
+    }
+
+    @Override
+    public void onLongItemClick(Track track) {
+        this.mCurrentClickHistorItem = track;
+        MyCheckBoxDialog myCheckBoxDialog = new MyCheckBoxDialog(getActivity());
+        myCheckBoxDialog.setOnDialogActionCilckListener(this);
+        myCheckBoxDialog.show();
+    }
+
+    @Override
+    public void onCancel() {
+
+    }
+
+    @Override
+    public void onGiveUp(boolean isCheck) {
+        if (mCurrentClickHistorItem != null && mHistoryPresenters != null) {
+            if (!isCheck) {
+                mHistoryPresenters.clearHistory();
+            } else {
+                mHistoryPresenters.delHistory(mCurrentClickHistorItem);
+            }
+
+        }
     }
 }

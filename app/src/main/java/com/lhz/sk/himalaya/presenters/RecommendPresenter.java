@@ -1,5 +1,7 @@
 package com.lhz.sk.himalaya.presenters;
 
+import android.util.Log;
+
 import com.lhz.sk.himalaya.data.api.MyXimalayaApi;
 import com.lhz.sk.himalaya.interfaces.IRecommendPresenters;
 import com.lhz.sk.himalaya.interfaces.IRecommendViewCallBack;
@@ -17,6 +19,8 @@ public class RecommendPresenter implements IRecommendPresenters {
     public static RecommendPresenter Instance = null;
     private List<IRecommendViewCallBack> callBacks = new ArrayList<>();
     private List<Album> mAlbumList = new ArrayList<>();
+    private List<Album> mListAlbumList = null;
+    private String TAB="RecommendPresenter";
 
     public static RecommendPresenter getInstance() {
         if (Instance == null) {
@@ -63,14 +67,25 @@ public class RecommendPresenter implements IRecommendPresenters {
 
     //获取推荐
     private void getRecommend() {
+        //TODO  缓存策略
+        if (!(mListAlbumList == null || mListAlbumList.size() == 0)) {
+            Log.e(TAB,"mListAlbumList  ------  本地") ;
+            if (callBacks != null) {
+                for (IRecommendViewCallBack callBack : callBacks) {
+                    callBack.onRecommendListData(mListAlbumList);
+                }
+                mAlbumList = mListAlbumList;
+            }
+        }
         upLoading();
         MyXimalayaApi ximalayApi = MyXimalayaApi.getInstance();
         ximalayApi.getRecommendList(new IDataCallBack<GussLikeAlbumList>() {
             @Override
             public void onSuccess(GussLikeAlbumList gussLikeAlbumList) {
                 if (gussLikeAlbumList != null) {
-                    List<Album> albumList = gussLikeAlbumList.getAlbumList();
-                    if (albumList.size() == 0) {
+                    Log.e(TAB,"mListAlbumList  ------  网络") ;
+                    mListAlbumList = gussLikeAlbumList.getAlbumList();
+                    if (mListAlbumList.size() == 0) {
                         if (callBacks != null) {
                             for (IRecommendViewCallBack callBack : callBacks) {
                                 callBack.onEmpty();
@@ -79,10 +94,10 @@ public class RecommendPresenter implements IRecommendPresenters {
                     } else {
                         if (callBacks != null) {
                             for (IRecommendViewCallBack callBack : callBacks) {
-                                callBack.onRecommendListData(albumList);
+                                callBack.onRecommendListData(mListAlbumList);
                             }
                         }
-                        mAlbumList = albumList;
+                        mAlbumList = mListAlbumList;
                     }
 
                 }

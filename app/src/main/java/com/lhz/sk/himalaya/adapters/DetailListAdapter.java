@@ -23,9 +23,9 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Vi
     private List<Track> mDetailData = new ArrayList<>();
     private SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat mDurationFormat = new SimpleDateFormat("mm:ss");
-    private onDetailItemCallLister mItemCallLister;
+    private onItemCallLister mItemCallLister;
 
-    public void setItemCallLister(onDetailItemCallLister itemCallLister) {
+    public void setItemCallLister(onItemCallLister itemCallLister) {
         mItemCallLister = itemCallLister;
     }
 
@@ -58,7 +58,15 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Vi
             @Override
             public void onClick(View v) {
                 if (mItemCallLister != null)
-                    mItemCallLister.onItemClick(mDetailData,position);
+                    mItemCallLister.onItemClick(mDetailData, position);
+            }
+        });
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mLongItemCallLister != null)
+                    mLongItemCallLister.onLongItemClick(mDetailData.get(position));
+                return true;
             }
         });
 
@@ -78,13 +86,23 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Vi
 
     }
 
+    public onLongItemCallLister mLongItemCallLister;
+
+    public void setLongItemCallLister(onLongItemCallLister longItemCallLister) {
+        mLongItemCallLister = longItemCallLister;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
         }
     }
 
-    public interface onDetailItemCallLister {
-        void onItemClick( List<Track> album,int position);
+    public interface onItemCallLister {
+        void onItemClick(List<Track> album, int position);
+    }
+
+    public interface onLongItemCallLister {
+        void onLongItemClick(Track album);
     }
 }
