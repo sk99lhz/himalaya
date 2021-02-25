@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
 
     <ImageView
         android:id="@+id/iv_enty"
         android:layout_width="@dimen/dp_75"
         android:layout_height="@dimen/dp_75"
-        android:layout_centerInParent="true"
-        android:src="@drawable/ic_enty">
-
-    </ImageView>
+        android:layout_gravity="center"
+        android:src="@drawable/ic_enty" />
 
     <TextView
         android:id="@+id/tv_enty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/iv_enty"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="@dimen/dp_4"
-        android:text="内容丢了" />
-</RelativeLayout>
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_48"
+        android:text="没有推荐内容！"
+        android:textSize="@dimen/sp_16" />
+</FrameLayout>

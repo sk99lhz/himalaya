@@ -1,6 +1,7 @@
 package com.lhz.sk.himalaya.adapters;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.lhz.sk.himalaya.R;
+import com.lhz.sk.himalaya.bases.BaseApplication;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 
 import java.util.ArrayList;
@@ -24,7 +26,6 @@ public class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.View
 
     private List<Album> mData = new ArrayList<>();
     private onAlbumItemCallLister Itemlister;
-
     public void setonAlbumItemCallLister(onAlbumItemCallLister onAlbumItemCallLister) {
         this.Itemlister = onAlbumItemCallLister;
     }
@@ -82,7 +83,6 @@ public class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.View
         }
 
         public void setData(Album album) {
-
             ImageView albumCover = itemView.findViewById(R.id.album_cover);
             TextView albumTitle = itemView.findViewById(R.id.album_title);
             TextView albumDesc = itemView.findViewById(R.id.album_desc);
@@ -94,11 +94,13 @@ public class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.View
 
             albumCountSize.setText(album.getPlayCount() + "");
             albumPlayCount.setText(album.getIncludeTrackCount() + "");
-            if (!TextUtils.isEmpty(album.getCoverUrlLarge())) {
-                Glide.with(itemView.getContext()).load(album.getCoverUrlLarge()).into(albumCover);
-            } else {
-                Glide.with(itemView.getContext()).load(R.mipmap.default_albm).into(albumCover);
-            }
+
+                if (!TextUtils.isEmpty(album.getCoverUrlLarge())) {
+                    Glide.with(BaseApplication.getContext()).load(album.getCoverUrlLarge()).into(albumCover);
+                } else {
+                    Glide.with(BaseApplication.getContext()).load(R.mipmap.default_albm).into(albumCover);
+                }
+
 
         }
     }

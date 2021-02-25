@@ -1,16 +1,26 @@
 package com.lhz.sk.himalaya.presenters;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.lhz.sk.himalaya.bases.BaseApplication;
 import com.lhz.sk.himalaya.data.api.MyXimalayaApi;
 import com.lhz.sk.himalaya.interfaces.IRecommendPresenters;
 import com.lhz.sk.himalaya.interfaces.IRecommendViewCallBack;
+import com.lhz.sk.himalaya.utils.JsonDataUtils;
+import com.lhz.sk.himalaya.utils.LogUtil;
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.album.GussLikeAlbumList;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import static com.lhz.sk.himalaya.utils.Contants.BINGDATASP;
+import static com.lhz.sk.himalaya.utils.Contants.BINGDATASPKEY;
 
 /**
  * Created by song
@@ -20,7 +30,9 @@ public class RecommendPresenter implements IRecommendPresenters {
     private List<IRecommendViewCallBack> callBacks = new ArrayList<>();
     private List<Album> mAlbumList = new ArrayList<>();
     private List<Album> mListAlbumList = null;
-    private String TAB="RecommendPresenter";
+    private final Album mFromJson;
+    private String mBingData;
+    private SharedPreferences mBingDataSp;
 
     public static RecommendPresenter getInstance() {
         if (Instance == null) {
@@ -34,6 +46,14 @@ public class RecommendPresenter implements IRecommendPresenters {
     }
 
     private RecommendPresenter() {
+        mBingDataSp = BaseApplication.getContext().getSharedPreferences(BINGDATASP, Context.MODE_PRIVATE);
+        mBingData = mBingDataSp.getString(BINGDATASPKEY, "");
+        LogUtil.e("mBingData", mBingData);
+        String musicSourceJson = JsonDataUtils.getJsonFromAssets(BaseApplication.getContext(), "MyAlbum.json");
+        Gson gson = new Gson();
+        mFromJson = gson.fromJson(musicSourceJson, Album.class);
+        if (mBingData != null)
+            mFromJson.setCoverUrlLarge(mBingData);
     }
 
     @Override
@@ -69,13 +89,15 @@ public class RecommendPresenter implements IRecommendPresenters {
     private void getRecommend() {
         //TODO  缓存策略
         if (!(mListAlbumList == null || mListAlbumList.size() == 0)) {
-            Log.e(TAB,"mListAlbumList  ------  本地") ;
+            LogUtil.e("mBingData", "本地=======================");
             if (callBacks != null) {
                 for (IRecommendViewCallBack callBack : callBacks) {
                     callBack.onRecommendListData(mListAlbumList);
                 }
                 mAlbumList = mListAlbumList;
             }
+
+            return;
         }
         upLoading();
         MyXimalayaApi ximalayApi = MyXimalayaApi.getInstance();
@@ -83,8 +105,9 @@ public class RecommendPresenter implements IRecommendPresenters {
             @Override
             public void onSuccess(GussLikeAlbumList gussLikeAlbumList) {
                 if (gussLikeAlbumList != null) {
-                    Log.e(TAB,"mListAlbumList  ------  网络") ;
+                    LogUtil.e("mBingData", "网络=======================");
                     mListAlbumList = gussLikeAlbumList.getAlbumList();
+                    mListAlbumList.add(mFromJson);
                     if (mListAlbumList.size() == 0) {
                         if (callBacks != null) {
                             for (IRecommendViewCallBack callBack : callBacks) {
@@ -93,6 +116,7 @@ public class RecommendPresenter implements IRecommendPresenters {
                         }
                     } else {
                         if (callBacks != null) {
+                            Collections.reverse(mListAlbumList);
                             for (IRecommendViewCallBack callBack : callBacks) {
                                 callBack.onRecommendListData(mListAlbumList);
                             }

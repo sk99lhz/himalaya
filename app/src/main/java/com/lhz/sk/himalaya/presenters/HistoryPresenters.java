@@ -22,7 +22,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by song
  */
 public class HistoryPresenters implements IHistoryPresenter, IHistoryDaoCallback {
-    private static final String TAB ="HistoryPresenters" ;
+    private static final String TAB = "HistoryPresenters";
     private List<IHistoryViewCallBack> callBacks = new ArrayList<>();
     public static HistoryPresenters Instance;
     private final HistoryDao mHistoryDao;
@@ -47,12 +47,9 @@ public class HistoryPresenters implements IHistoryPresenter, IHistoryDaoCallback
 
     @Override
     public void listHistory() {
-        Observable.create(new ObservableOnSubscribe<Object>() {
-            @Override
-            public void subscribe(@NonNull ObservableEmitter<Object> emitter) throws Exception {
-                if (mHistoryDao != null)
-                    mHistoryDao.getHistorys();
-            }
+        Observable.create(emitter -> {
+            if (mHistoryDao != null)
+                mHistoryDao.getHistorys();
         }).subscribeOn(Schedulers.io()).subscribe();
     }
 
@@ -132,19 +129,15 @@ public class HistoryPresenters implements IHistoryPresenter, IHistoryDaoCallback
 
     @Override
     public void onClearHistory(boolean isOk) {
-
+        listHistory();
     }
 
     @Override
     public void onHistoryLoader(List<Track> tracks) {
-        LogUtil.e(TAB,tracks.size()+"");
         this.mCurrentHistory = tracks;
-        BaseApplication.getHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                for (IHistoryViewCallBack callBack : callBacks) {
-                    callBack.HistoryLoaded(tracks);
-                }
+        BaseApplication.getHandler().post(() -> {
+            for (IHistoryViewCallBack callBack : callBacks) {
+                callBack.HistoryLoaded(tracks);
             }
         });
     }

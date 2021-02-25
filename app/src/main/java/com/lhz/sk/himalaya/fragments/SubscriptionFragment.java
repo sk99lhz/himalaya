@@ -7,14 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
-import com.lhz.sk.himalaya.DetailsActivity;
+import com.lhz.sk.himalaya.activitys.DetailsActivity;
 import com.lhz.sk.himalaya.R;
 import com.lhz.sk.himalaya.adapters.AlbumListAdapter;
 import com.lhz.sk.himalaya.bases.BaseApplication;
@@ -22,6 +21,7 @@ import com.lhz.sk.himalaya.bases.BaseFragment;
 import com.lhz.sk.himalaya.interfaces.ISubscriptionViewCallBack;
 import com.lhz.sk.himalaya.presenters.DetailPresenter;
 import com.lhz.sk.himalaya.presenters.SubscriptionPresenter;
+import com.lhz.sk.himalaya.utils.LogUtil;
 import com.lhz.sk.himalaya.utils.ToastUtils;
 import com.lhz.sk.himalaya.views.MyDialog;
 import com.lhz.sk.himalaya.views.UILoader;
@@ -29,14 +29,14 @@ import com.ximalaya.ting.android.opensdk.model.album.Album;
 
 import net.lucode.hackware.magicindicator.buildins.UIUtil;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by song
  */
-public class SubscriptionFragment extends BaseFragment implements ISubscriptionViewCallBack, AlbumListAdapter.onAlbumLongItemCallLister {
+public class SubscriptionFragment extends BaseFragment implements ISubscriptionViewCallBack, AlbumListAdapter.onAlbumLongItemCallLister, AlbumListAdapter.onAlbumItemCallLister {
 
+    private static final String TAB = "SubscriptionFragment";
     private SubscriptionPresenter mSubscriptionPresenter;
     private RecyclerView mRecyclerView;
     private TwinklingRefreshLayout mTwinklingRefreshLayout;
@@ -58,6 +58,7 @@ public class SubscriptionFragment extends BaseFragment implements ISubscriptionV
                     View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_empty_view, this, false);
                     TextView textView = view.findViewById(R.id.tv_enty);
                     textView.setText("没有订阅记录！");
+                    textView.setTextColor(getResources().getColor(R.color.main_color));
                     return view;
                 }
             };
@@ -91,12 +92,7 @@ public class SubscriptionFragment extends BaseFragment implements ISubscriptionV
                 outRect.right = UIUtil.dip2px(getContext(), 5);
             }
         });
-        mAlbumListAdapter.setonAlbumItemCallLister((position, album) -> {
-            DetailPresenter presenter = DetailPresenter.getInstance();
-            presenter.setTargetAlbum(album);
-            Intent intent = new Intent(getContext(), DetailsActivity.class);
-            startActivity(intent);
-        });
+        mAlbumListAdapter.setonAlbumItemCallLister(this);
         mAlbumListAdapter.setonAlbumLongItemCallLister(this);
         if (mUiLoader != null) {
             mUiLoader.updateStatus(UILoader.UIStatus.LOADING);
@@ -129,7 +125,6 @@ public class SubscriptionFragment extends BaseFragment implements ISubscriptionV
 
         if (mAlbumListAdapter != null) {
             if (albums != null) {
-
                 mAlbumListAdapter.setData(albums);
             }
         }
@@ -144,8 +139,13 @@ public class SubscriptionFragment extends BaseFragment implements ISubscriptionV
     public void onDestroyView() {
         super.onDestroyView();
         mSubscriptionPresenter.unregisterViewCallback(this);
-        mAlbumListAdapter.setonAlbumItemCallLister(null);
+        mAlbumListAdapter.setonAlbumItemCallLister(this);
         mAlbumListAdapter.setonAlbumLongItemCallLister(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
@@ -166,5 +166,13 @@ public class SubscriptionFragment extends BaseFragment implements ISubscriptionV
             }
         });
         myDialog.show();
+    }
+
+    @Override
+    public void onItemClick(int position, Album album) {
+        DetailPresenter presenter = DetailPresenter.getInstance();
+        presenter.setTargetAlbum(album);
+        Intent intent = new Intent(getContext(), DetailsActivity.class);
+        startActivity(intent);
     }
 }

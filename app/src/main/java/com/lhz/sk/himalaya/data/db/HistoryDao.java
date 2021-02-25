@@ -4,9 +4,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.lhz.sk.himalaya.bases.BaseApplication;
 import com.lhz.sk.himalaya.utils.Contants;
+import com.lhz.sk.himalaya.utils.LogUtil;
 import com.ximalaya.ting.android.opensdk.model.album.Announcer;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 
@@ -48,6 +50,8 @@ public class HistoryDao implements IHistoryDao {
                 values.put(Contants.HISTORY_UPDATE_TIME, track.getUpdatedAt());
                 values.put(Contants.HISTORY_COVER, track.getCoverUrlLarge());
                 values.put(Contants.HISTORY_AUTHOR, track.getAnnouncer().getNickname());
+                values.put(Contants.HISTORY_KIND,track.getKind());
+                values.put(Contants.HISTORY_PLAY_URL, track.getPlayUrl32());
                 db.insert(Contants.HISTORY_TB_NAME, null, values);
                 db.setTransactionSuccessful();
                 isaddHistory = true;
@@ -145,6 +149,10 @@ public class HistoryDao implements IHistoryDao {
                     track.setCoverUrlLarge(cover);
                     track.setCoverUrlSmall(cover);
                     track.setCoverUrlMiddle(cover);
+                    String kind=cursor.getString(cursor.getColumnIndex(Contants.HISTORY_KIND));
+                    track.setKind(kind);
+                    String playUrl = cursor.getString(cursor.getColumnIndex(Contants.HISTORY_PLAY_URL));
+                    track.setPlayUrl32(playUrl);
                     String author = cursor.getString(cursor.getColumnIndex(Contants.HISTORY_AUTHOR));
                     Announcer announcer = new Announcer();
                     announcer.setNickname(author);

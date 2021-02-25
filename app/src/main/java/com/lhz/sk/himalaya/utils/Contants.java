@@ -36,7 +36,14 @@ public class Contants {
     public static final String HISTORY_UPDATE_TIME = "historyUpdateTime";
     public static final String HISTORY_COVER = "historyCover";
     public static final String HISTORY_AUTHOR = "history_author";
+    public static final String HISTORY_KIND = "history_kind";
+    public static final String HISTORY_PLAY_URL = "history_playurl";
     //最大的历史记录数
     public static final int MAX_HISTORY_COUNT = 100;
+
+    public static final String BINGDATASP = "BINGDATASP";
+
+    public static final String BINGDATASPKEY = "BINGDATASPKEY";
+
 
 }

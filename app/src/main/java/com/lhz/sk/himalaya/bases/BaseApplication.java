@@ -3,6 +3,7 @@ package com.lhz.sk.himalaya.bases;
 import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
@@ -37,7 +38,7 @@ public class BaseApplication extends Application {
         XmPlayerManager.getInstance(this).setBreakpointResume(false);
         XmPlayerManager.getInstance(this).init();
         XmPlayerConfig.monitorNetWorkChangeAndTryPlay = true;
-        sHandler = new Handler();
+        sHandler = new Handler(Looper.myLooper());
         mContext = getApplicationContext();
     }
 

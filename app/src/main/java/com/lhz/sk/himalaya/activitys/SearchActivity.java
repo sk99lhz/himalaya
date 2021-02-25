@@ -1,4 +1,4 @@
-package com.lhz.sk.himalaya;
+package com.lhz.sk.himalaya.activitys;
 
 import android.content.Intent;
 import android.graphics.Rect;
@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
+import com.lhz.sk.himalaya.R;
 import com.lhz.sk.himalaya.adapters.AlbumListAdapter;
 import com.lhz.sk.himalaya.adapters.SearchRecommendAdapter;
 import com.lhz.sk.himalaya.bases.BaseActivity;

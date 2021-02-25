@@ -42,9 +42,11 @@ public class MyXimalayaDbHelper extends SQLiteOpenHelper {
                 Contants.HISTORY_TRACK_ID + " integer, " +
                 Contants.HISTORY_TITLE + " varchar," +
                 Contants.HISTORY_COVER + " varchar," +
+                Contants.HISTORY_PLAY_URL+" varchar," +
                 Contants.HISTORY_PLAY_COUNT + " integer," +
                 Contants.HISTORY_DURATION + " integer," +
                 Contants.HISTORY_AUTHOR + " varchar," +
+                Contants.HISTORY_KIND + " varchar," +
                 Contants.HISTORY_UPDATE_TIME + " integer" +
                 ")";
         db.execSQL(historyTbSql);

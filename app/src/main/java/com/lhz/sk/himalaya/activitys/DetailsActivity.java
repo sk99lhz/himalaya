@@ -1,7 +1,9 @@
-package com.lhz.sk.himalaya;
+package com.lhz.sk.himalaya.activitys;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
+import com.lhz.sk.himalaya.R;
 import com.lhz.sk.himalaya.adapters.DetailListAdapter;
 import com.lhz.sk.himalaya.bases.BaseActivity;
 import com.lhz.sk.himalaya.interfaces.IDetailViewCallBack;
@@ -39,11 +42,15 @@ import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl;
 
 import net.lucode.hackware.magicindicator.buildins.UIUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
-public class DetailsActivity extends BaseActivity implements IDetailViewCallBack, DetailListAdapter.onItemCallLister, IPlayerViewCallBack, ISubscriptionViewCallBack {
+
+
+public class DetailsActivity extends BaseActivity implements IDetailViewCallBack,
+        DetailListAdapter.onItemCallLister, IPlayerViewCallBack, ISubscriptionViewCallBack {
 
     private static final String TAB = "DetailsActivity";
     private ImageView mLargeCover;
@@ -61,7 +68,7 @@ public class DetailsActivity extends BaseActivity implements IDetailViewCallBack
     private TextView mControlTv;
     private PlayerPresenter mPlayerPresenter;
     private List<Track> mCurrentTrack = null;
-
+    private SharedPreferences mPreferences;
     private static int mCurrentIndex = 0;
     private TwinklingRefreshLayout mRefreslayout;
     private String mTitle;
@@ -86,6 +93,7 @@ public class DetailsActivity extends BaseActivity implements IDetailViewCallBack
         mSubscriptionPresenter.registerViewCallback(this);
         initListener();
         updateSubState();
+
     }
 
     private void updateSubState() {
@@ -161,13 +169,10 @@ public class DetailsActivity extends BaseActivity implements IDetailViewCallBack
                 }
             };
         }
-        mUiLoader.setOnRetryClickListener(new UILoader.OnRetryClickListener() {
-            @Override
-            public void OnRetry() {
-                if (mPresenter != null) {
-                    mUiLoader.updateStatus(UILoader.UIStatus.LOADING);
-                    mPresenter.getAlbumDetail((int) mAlbumId, mCurrent);
-                }
+        mUiLoader.setOnRetryClickListener(() -> {
+            if (mPresenter != null) {
+                mUiLoader.updateStatus(UILoader.UIStatus.LOADING);
+                mPresenter.getAlbumDetail((int) mAlbumId, mCurrent);
             }
         });
 
@@ -407,6 +412,6 @@ public class DetailsActivity extends BaseActivity implements IDetailViewCallBack
 
     @Override
     public void onSubToMany() {
-        ToastUtils.showToast(this,"订阅不超过一百！");
+        ToastUtils.showToast(this, "订阅不超过一百！");
     }
 }

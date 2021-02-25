@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/main_color">
+    <ImageView
+        android:layout_marginBottom="@dimen/dp_26"
+        android:layout_gravity="center"
+        android:src="@drawable/icon_logo"
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="@dimen/dp_80">
+    </ImageView>
+    <TextView
+        android:layout_marginBottom="@dimen/dp_26"
+        android:layout_marginTop="@dimen/dp_90"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="悦耳动听,宛若天籁"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_24" />
+
+    <TextView
+        android:layout_marginBottom="@dimen/dp_26"
+        android:layout_marginTop="@dimen/dp_90"
+        android:id="@+id/tv_translate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/main_color"
+        android:text="时光不老，音乐长存!"
+        android:textColor="@color/main_color"
+        android:textSize="@dimen/sp_24" />
+
+</FrameLayout>

@@ -1,34 +1,48 @@
-package com.lhz.sk.himalaya;
+package com.lhz.sk.himalaya.activitys;
 
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowInsets;
+import android.view.WindowInsetsController;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.core.view.ViewCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.disklrucache.DiskLruCache;
 import com.bumptech.glide.request.RequestOptions;
+import com.lhz.sk.himalaya.R;
 import com.lhz.sk.himalaya.adapters.PlayerPageAdapter;
 import com.lhz.sk.himalaya.bases.BaseActivity;
 import com.lhz.sk.himalaya.interfaces.IPlayerViewCallBack;
 import com.lhz.sk.himalaya.presenters.PlayerPresenter;
 import com.lhz.sk.himalaya.utils.LogUtil;
+import com.lhz.sk.himalaya.utils.Message;
 import com.lhz.sk.himalaya.utils.ToastUtils;
 import com.lhz.sk.himalaya.views.SobPopWindow;
+import com.ximalaya.ting.android.opensdk.model.tag.Tag;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -36,6 +50,7 @@ import java.util.List;
 import java.util.Map;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
+
 
 import static com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl.PlayMode.PLAY_MODEL_LIST;
 import static com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl.PlayMode.PLAY_MODEL_LIST_LOOP;
@@ -60,14 +75,13 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
     private String mTitle;
     private ViewPager mPager;
     private PlayerPageAdapter mPlayerPageAdapter;
-
     private boolean isUserSlidePage = false;
     private ImageView mIvbg;
     private String mUrlLarge;
     private ImageView mIvPlayModeSwich;
     private XmPlayListControl.PlayMode mCurrentMode = PLAY_MODEL_LIST;
     private static Map<XmPlayListControl.PlayMode, XmPlayListControl.PlayMode> sPlayModeMap = new HashMap<>();
-
+    //WindowInsetsController
     static {
         sPlayModeMap.put(PLAY_MODEL_LIST, PLAY_MODEL_LIST_LOOP);
         sPlayModeMap.put(PLAY_MODEL_LIST_LOOP, PLAY_MODEL_RANDOM);
@@ -81,7 +95,7 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
     private ValueAnimator mValueAnimator;
     private ValueAnimator mOutValueAnimator;
     private static int ANIMATOR_DURATION = 400;
-    private int mCurrentplayIndex=0;
+    private int mCurrentplayIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,12 +106,11 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
         initView();
         mPlayerPresenter = PlayerPresenter.getInstance();
         mPlayerPresenter.registerViewCallback(this);
-       // mPlayerPresenter.getPlayList();
         iniEvent();
         initBgAnimation();
         updatePlayState(mPlayerPresenter.isPlay());
-    }
 
+    }
 
     private void initBgAnimation() {
         mValueAnimator = ValueAnimator.ofFloat(1.0f, 0.6f);
@@ -126,7 +139,6 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
             @Override
             public void onClick(View v) {
                 if (mPlayerPresenter.isPlay()) {
-
                     mPlayerPresenter.pause();
                 } else {
 
@@ -202,11 +214,8 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
             }
         });
         mPager.setOnTouchListener((v, event) -> {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    isUserSlidePage = true;
-                    break;
-
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                isUserSlidePage = true;
             }
 
             return false;
@@ -309,23 +318,33 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
         mPlayList = findViewById(R.id.ic_music_lists);
         mPopWindow = new SobPopWindow();
         mPlayerPageAdapter = new PlayerPageAdapter(this);
+
     }
 
     @Override
     public void onPlayStart() {
         if (mControlBtn != null)
             mControlBtn.setImageResource(R.drawable.ic_baseline_pause_circle_filled_24);
-
+        if (mPlayerPageAdapter != null) {
+            mPlayerPageAdapter.setAnimation(true);
+        }
     }
 
     @Override
     public void onPlayPause() {
         if (mControlBtn != null)
             mControlBtn.setImageResource(R.drawable.ic_baseline_play_circle_filled_24);
+        if (mPlayerPageAdapter != null) {
+            mPlayerPageAdapter.setAnimation(false);
+        }
     }
+
     private void updatePlayState(boolean isPlay) {
         if (mControlBtn != null) {
             mControlBtn.setImageResource(isPlay ? R.drawable.ic_baseline_pause_circle_filled_24 : R.drawable.ic_baseline_play_circle_filled_24);
+        }
+        if (mPlayerPageAdapter != null) {
+            mPlayerPageAdapter.setAnimation(isPlay);
         }
     }
 
@@ -333,7 +352,9 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
     public void onPlayStop() {
         if (mControlBtn != null)
             mControlBtn.setImageResource(R.drawable.ic_baseline_play_circle_filled_24);
-
+        if (mPlayerPageAdapter != null) {
+            mPlayerPageAdapter.setAnimation(false);
+        }
     }
 
     @Override
@@ -367,7 +388,6 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
     }
 
     public void onProgressChange(int current, int total) {
-        LogUtil.e(TAB,"current  "+current+"   total   "+  total);
         mSeekBar.setMax(total);
         String totalTime;
         String currentPosition;
@@ -403,18 +423,18 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
 
     @Override
     public void onTrackUpData(Track track, int playIndex) {
-        this.mCurrentplayIndex=playIndex;
+        this.mCurrentplayIndex = playIndex;
         if (track == null) {
-           // ToastUtils.showToast(PlayerActivity.this,"没有播放");
+            // ToastUtils.showToast(PlayerActivity.this,"没有播放");
             return;
         }
         this.mTitle = track.getTrackTitle();
         mUrlLarge = track.getCoverUrlLarge();
         if (mTracktitle != null) {
-            mTracktitle.setText(track.getTrackTitle());
+            mTracktitle.setText(mTitle);
         }
         if (mPager != null) {
-           mPager.setCurrentItem(playIndex, true);
+            mPager.setCurrentItem(playIndex, true);
         }
 
         if (mPopWindow != null) {
@@ -428,6 +448,12 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
                     .into(mIvbg);
         }
 
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
@@ -439,6 +465,7 @@ public class PlayerActivity extends BaseActivity implements IPlayerViewCallBack 
     protected void onDestroy() {
         super.onDestroy();
         mPlayerPresenter.unregisterViewCallback(this);
+
     }
 
     private boolean testOrder = false;

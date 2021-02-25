@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
-import com.lhz.sk.himalaya.PlayerActivity;
+import com.lhz.sk.himalaya.activitys.PlayerActivity;
 import com.lhz.sk.himalaya.R;
 import com.lhz.sk.himalaya.adapters.DetailListAdapter;
 import com.lhz.sk.himalaya.bases.BaseApplication;
@@ -59,23 +59,28 @@ public class HistoryFragment extends BaseFragment implements
                 protected View getEmptyView() {
                     View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_empty_view, this, false);
                     TextView textView = view.findViewById(R.id.tv_enty);
+                    textView.setTextColor(getResources().getColor(R.color.main_color));
                     textView.setText("没有历史记录！");
                     return view;
                 }
             };
 
+        }else {
+            if (mUiLoader.getParent() instanceof ViewGroup) {
+                ((ViewGroup) mUiLoader.getParent()).removeView(mUiLoader);
+            }
         }
-        if (mUiLoader.getParent() instanceof ViewGroup) {
-            ((ViewGroup) mUiLoader.getParent()).removeView(mUiLoader);
-        }
+        mHistoryPresenters = HistoryPresenters.getInstance();
+        mHistoryPresenters.registerViewCallback(this);
+        mHistoryPresenters.listHistory();
+        mUiLoader.updateStatus(UILoader.UIStatus.LOADING);
         inflate.addView(mUiLoader);
         return inflate;
     }
 
     private View createSuccessView(ViewGroup container) {
         View inflate = LayoutInflater.from(container.getContext()).inflate(R.layout.item_history_fm, container, false);
-        mHistoryPresenters = HistoryPresenters.getInstance();
-        mHistoryPresenters.registerViewCallback(this);
+
 
         mRecyclerView = inflate.findViewById(R.id.rd_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(inflate.getContext()));
@@ -144,9 +149,10 @@ public class HistoryFragment extends BaseFragment implements
     public void onGiveUp(boolean isCheck) {
         if (mCurrentClickHistorItem != null && mHistoryPresenters != null) {
             if (!isCheck) {
-                mHistoryPresenters.clearHistory();
-            } else {
                 mHistoryPresenters.delHistory(mCurrentClickHistorItem);
+            } else {
+                mHistoryPresenters.clearHistory();
+
             }
 
         }

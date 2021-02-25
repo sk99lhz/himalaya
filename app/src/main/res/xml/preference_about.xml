@@ -1,30 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/app_name">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:title="@string/app_name"
+        app:iconSpaceReserved="false">
         <Preference
             android:key="version"
-            android:summary="v 1.0"
-            android:title="当前版本" />
+            android:title="当前版本"
+            app:iconSpaceReserved="false" />
         <Preference
             android:key="share"
-            android:title="@string/menu_share" />
+            android:title="@string/menu_share"
+            app:iconSpaceReserved="false" />
         <Preference
             android:key="star"
             android:summary="前往项目地址给个Star，鼓励作者"
-            android:title="给我点赞" />
+            android:title="给我点赞"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="关于作者">
+    <PreferenceCategory
+        android:title="关于作者"
+        app:iconSpaceReserved="false">
         <Preference
             android:key="github"
             android:summary="@string/about_github"
-            android:title="Github" />
+            android:title="Github"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="版权">
+    <PreferenceCategory
+        android:title="版权"
+        app:iconSpaceReserved="false">
+        <Preference
+            android:summary="喜马拉雅"
+            android:title="在线音频"
+            app:iconSpaceReserved="false" />
         <Preference
             android:summary="九酷音乐"
-            android:title="在线音乐" />
+            android:title="在线音乐"
+            app:iconSpaceReserved="false" />
         <Preference
             android:summary="必应"
-            android:title="图片数据" />
+            android:title="图片数据"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
 </PreferenceScreen>

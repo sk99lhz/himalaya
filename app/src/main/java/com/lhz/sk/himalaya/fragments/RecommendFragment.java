@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
-import com.lhz.sk.himalaya.DetailsActivity;
+import com.lhz.sk.himalaya.activitys.DetailsActivity;
 import com.lhz.sk.himalaya.R;
 import com.lhz.sk.himalaya.adapters.AlbumListAdapter;
 import com.lhz.sk.himalaya.bases.BaseFragment;

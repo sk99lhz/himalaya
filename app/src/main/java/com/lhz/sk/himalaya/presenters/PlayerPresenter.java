@@ -2,6 +2,7 @@ package com.lhz.sk.himalaya.presenters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.lhz.sk.himalaya.data.api.MyXimalayaApi;
 import com.lhz.sk.himalaya.bases.BaseApplication;
@@ -48,7 +49,7 @@ public class PlayerPresenter implements IPlayerPresenter, IXmAdsStatusListener, 
     public static final int PLAY_MODEL_LIST_LOOP_INT = 1;
     public static final int PLAY_MODEL_RANDOM_INT = 2;
     public static final int PLAY_MODEL_SINGLE_LOOP_INT = 3;
-    private List<Track>  mCurrentTrack=new ArrayList<>();
+    private List<Track> mCurrentTrack = new ArrayList<>();
     public static final String PLAY_MODE_SP_NAME = "PLAY_MODE_SP_NAME";
 
     public static final String PLAY_MODE_SP_KEY = "PLAY_MODE_SP_KEY";
@@ -83,8 +84,11 @@ public class PlayerPresenter implements IPlayerPresenter, IXmAdsStatusListener, 
         return Instance;
     }
 
+
+
     public void setPlayList(List<Track> tracks, int index) {
         if (mPlayerManager != null) {
+            LogUtil.e(TAB, "setPlayList= " + tracks.get(index).getPlayUrl32());
             mPlayerManager.setPlayList(tracks, index);
             mPlayListSet = true;
             mTrack = tracks.get(index);
@@ -352,10 +356,10 @@ public class PlayerPresenter implements IPlayerPresenter, IXmAdsStatusListener, 
 
     @Override
     public void onSoundSwitch(PlayableModel lastModel, PlayableModel curModel) {
-
         mCurrentIndex = mPlayerManager.getCurrentIndex();
         if (curModel instanceof Track) {
             Track track = (Track) curModel;
+            this.mTrack = track;
             HistoryPresenters historyPresenters = HistoryPresenters.getInstance();
             historyPresenters.addHistory(track);
             if (callBacks != null) {

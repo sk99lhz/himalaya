@@ -24,6 +24,7 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Vi
     private SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat mDurationFormat = new SimpleDateFormat("mm:ss");
     private onItemCallLister mItemCallLister;
+    private String totalTime;
 
     public void setItemCallLister(onItemCallLister itemCallLister) {
         mItemCallLister = itemCallLister;
@@ -91,6 +92,7 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Vi
     public void setLongItemCallLister(onLongItemCallLister longItemCallLister) {
         mLongItemCallLister = longItemCallLister;
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ViewHolder(@NonNull View itemView) {

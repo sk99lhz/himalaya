@@ -4,9 +4,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import androidx.annotation.IdRes;
+
 
 import com.lhz.sk.himalaya.bases.BaseApplication;
+
 import com.lhz.sk.himalaya.utils.Contants;
 import com.lhz.sk.himalaya.utils.LogUtil;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
