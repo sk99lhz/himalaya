@@ -18,6 +18,7 @@ import com.lhz.sk.himalaya.R;
 import com.lhz.sk.himalaya.adapters.AlbumListAdapter;
 import com.lhz.sk.himalaya.bases.BaseApplication;
 import com.lhz.sk.himalaya.bases.BaseFragment;
+import com.lhz.sk.himalaya.interfaces.ISubscriptionPresenter;
 import com.lhz.sk.himalaya.interfaces.ISubscriptionViewCallBack;
 import com.lhz.sk.himalaya.presenters.DetailPresenter;
 import com.lhz.sk.himalaya.presenters.SubscriptionPresenter;
@@ -37,7 +38,7 @@ import java.util.List;
 public class SubscriptionFragment extends BaseFragment implements ISubscriptionViewCallBack, AlbumListAdapter.onAlbumLongItemCallLister, AlbumListAdapter.onAlbumItemCallLister {
 
     private static final String TAB = "SubscriptionFragment";
-    private SubscriptionPresenter mSubscriptionPresenter;
+    private ISubscriptionPresenter mSubscriptionPresenter;
     private RecyclerView mRecyclerView;
     private TwinklingRefreshLayout mTwinklingRefreshLayout;
     private AlbumListAdapter mAlbumListAdapter;

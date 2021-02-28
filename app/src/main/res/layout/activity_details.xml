@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/iv_large_cover"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_150"
+        android:layout_height="@dimen/dp_176"
         android:scaleType="fitXY" />
 
     <RelativeLayout

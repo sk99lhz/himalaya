@@ -6,6 +6,7 @@
 
     <string-array name="indicator_title">
         <item>推荐</item>
+        <item>发现</item>
         <item>订阅</item>
         <item>历史</item>
     </string-array>
@@ -32,4 +33,6 @@
     <string name="sub_text">订阅</string>
     <string name="cancel_sub_success">取消订阅成功</string>
     <string name="cancel_sub_fai">取消失败</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">测试中！</string>
 </resources>

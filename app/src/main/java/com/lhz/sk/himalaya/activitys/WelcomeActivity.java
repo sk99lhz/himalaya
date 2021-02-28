@@ -24,7 +24,7 @@ import static com.lhz.sk.himalaya.utils.Contants.BINGDATASPKEY;
 public class WelcomeActivity extends BaseActivity implements IBingCallBack {
     private TranslateAnimation translateAnimation;
     private SharedPreferences mPreferences;
-    private BingPresenter mBingPresenter;
+    private IBingPresenters mBingPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,7 +1,10 @@
 package com.lhz.sk.himalaya.interfaces;
 
 import com.lhz.sk.himalaya.bases.BaseViewCallBack;
+import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl;
+
+import java.util.List;
 
 /**
  * Created by song
@@ -31,4 +34,7 @@ public interface IPlayerPresenter extends BaseViewCallBack<IPlayerViewCallBack> 
 
     void playByAlbumId(long id);
 
+    boolean isPlayList();
+
+    void setPlayList(List<Track> tracks, int index);
 }

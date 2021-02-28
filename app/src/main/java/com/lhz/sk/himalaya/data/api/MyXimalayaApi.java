@@ -6,6 +6,7 @@ import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
 import com.ximalaya.ting.android.opensdk.model.album.GussLikeAlbumList;
 import com.ximalaya.ting.android.opensdk.model.album.SearchAlbumList;
+import com.ximalaya.ting.android.opensdk.model.announcer.AnnouncerList;
 import com.ximalaya.ting.android.opensdk.model.track.TrackList;
 import com.ximalaya.ting.android.opensdk.model.word.HotWordList;
 import com.ximalaya.ting.android.opensdk.model.word.SuggestWords;
@@ -67,5 +68,11 @@ public class MyXimalayaApi {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.SEARCH_KEY, key);
         CommonRequest.getSuggestWord(map, callBack);
+    }
+    public void getFindData(IDataCallBack<AnnouncerList> callBack,String id){
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(DTransferConstants.VCATEGORY_ID, id);
+        map.put(DTransferConstants.CALC_DIMENSION, "1");
+        CommonRequest.getAnnouncerList(map,callBack);
     }
 }

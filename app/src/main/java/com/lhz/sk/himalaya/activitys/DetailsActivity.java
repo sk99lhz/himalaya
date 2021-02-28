@@ -1,7 +1,7 @@
 package com.lhz.sk.himalaya.activitys;
 
 
-import android.content.Context;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -26,8 +26,11 @@ import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.lhz.sk.himalaya.R;
 import com.lhz.sk.himalaya.adapters.DetailListAdapter;
 import com.lhz.sk.himalaya.bases.BaseActivity;
+import com.lhz.sk.himalaya.interfaces.IDetailPresenters;
 import com.lhz.sk.himalaya.interfaces.IDetailViewCallBack;
+import com.lhz.sk.himalaya.interfaces.IPlayerPresenter;
 import com.lhz.sk.himalaya.interfaces.IPlayerViewCallBack;
+import com.lhz.sk.himalaya.interfaces.ISubscriptionPresenter;
 import com.lhz.sk.himalaya.interfaces.ISubscriptionViewCallBack;
 import com.lhz.sk.himalaya.presenters.DetailPresenter;
 import com.lhz.sk.himalaya.presenters.PlayerPresenter;
@@ -42,7 +45,7 @@ import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl;
 
 import net.lucode.hackware.magicindicator.buildins.UIUtil;
 
-import java.text.SimpleDateFormat;
+
 import java.util.List;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
@@ -57,7 +60,7 @@ public class DetailsActivity extends BaseActivity implements IDetailViewCallBack
     private RoundRectImageView mSmallCover;
     private TextView mAlbumTitle;
     private TextView mAlbumAuthor;
-    private DetailPresenter mPresenter;
+    private IDetailPresenters mPresenter;
     private int mCurrent = 1;
     private RecyclerView mRvDetail;
     private DetailListAdapter mDetailListAdapter;
@@ -66,14 +69,14 @@ public class DetailsActivity extends BaseActivity implements IDetailViewCallBack
     private long mAlbumId = -1;
     private ImageView mControlBtn;
     private TextView mControlTv;
-    private PlayerPresenter mPlayerPresenter;
+    private IPlayerPresenter mPlayerPresenter;
     private List<Track> mCurrentTrack = null;
     private SharedPreferences mPreferences;
     private static int mCurrentIndex = 0;
     private TwinklingRefreshLayout mRefreslayout;
     private String mTitle;
     private TextView mSubBtn;
-    private SubscriptionPresenter mSubscriptionPresenter;
+    private ISubscriptionPresenter mSubscriptionPresenter;
     private Album mCurrentAlbum;
 
     @Override

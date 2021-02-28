@@ -27,6 +27,8 @@ import com.lhz.sk.himalaya.adapters.ViewPageAdapter;
 import com.lhz.sk.himalaya.bases.BaseActivity;
 import com.lhz.sk.himalaya.bases.BaseApplication;
 import com.lhz.sk.himalaya.interfaces.IBingCallBack;
+import com.lhz.sk.himalaya.interfaces.IBingPresenters;
+import com.lhz.sk.himalaya.interfaces.IPlayerPresenter;
 import com.lhz.sk.himalaya.interfaces.IPlayerViewCallBack;
 import com.lhz.sk.himalaya.presenters.BingPresenter;
 import com.lhz.sk.himalaya.presenters.PlayerPresenter;
@@ -58,7 +60,7 @@ public class MainActivity extends BaseActivity implements IPlayerViewCallBack, I
     private TextView mMiantitle;
     private TextView mMiansiger;
     private ImageView mPlayIv;
-    private PlayerPresenter mPlayerPresenter;
+    private IPlayerPresenter mPlayerPresenter;
     private String mTrackTitle;
     private String mNickname;
     private String mCoverUrlMiddle;
@@ -67,7 +69,7 @@ public class MainActivity extends BaseActivity implements IPlayerViewCallBack, I
     private Track mCurrenttrack;
     private int mCurrentplayIndex;
     private NavigationView mNavigationView;
-    private BingPresenter mBingPresenter;
+    private IBingPresenters mBingPresenter;
     private ImageView mUserIv;
     private String mBingData = null;
     private SharedPreferences mPreferences;

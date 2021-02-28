@@ -84,8 +84,7 @@ public class PlayerPresenter implements IPlayerPresenter, IXmAdsStatusListener, 
         return Instance;
     }
 
-
-
+    @Override
     public void setPlayList(List<Track> tracks, int index) {
         if (mPlayerManager != null) {
             LogUtil.e(TAB, "setPlayList= " + tracks.get(index).getPlayUrl32());
@@ -401,7 +400,7 @@ public class PlayerPresenter implements IPlayerPresenter, IXmAdsStatusListener, 
         return false;
     }
 
-
+    @Override
     public boolean isPlayList() {
         return mPlayListSet;
     }

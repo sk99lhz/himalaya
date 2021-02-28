@@ -2,6 +2,7 @@ package com.lhz.sk.himalaya.fragments;
 
 import android.content.Intent;
 import android.graphics.Rect;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.lhz.sk.himalaya.R;
 import com.lhz.sk.himalaya.adapters.DetailListAdapter;
 import com.lhz.sk.himalaya.bases.BaseApplication;
 import com.lhz.sk.himalaya.bases.BaseFragment;
+import com.lhz.sk.himalaya.interfaces.IHistoryPresenter;
 import com.lhz.sk.himalaya.interfaces.IHistoryViewCallBack;
 import com.lhz.sk.himalaya.presenters.HistoryPresenters;
 import com.lhz.sk.himalaya.presenters.PlayerPresenter;
@@ -41,7 +43,7 @@ public class HistoryFragment extends BaseFragment implements
     private RecyclerView mRecyclerView;
     private TwinklingRefreshLayout mTwinklingRefreshLayout;
     private DetailListAdapter mDetailListAdapter;
-    private HistoryPresenters mHistoryPresenters;
+    private IHistoryPresenter mHistoryPresenters;
     private Track mCurrentClickHistorItem = null;
 
 

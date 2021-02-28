@@ -25,6 +25,7 @@ import com.lhz.sk.himalaya.R;
 import com.lhz.sk.himalaya.adapters.AlbumListAdapter;
 import com.lhz.sk.himalaya.adapters.SearchRecommendAdapter;
 import com.lhz.sk.himalaya.bases.BaseActivity;
+import com.lhz.sk.himalaya.interfaces.ISearchPresenter;
 import com.lhz.sk.himalaya.interfaces.ISearchViewCallBack;
 import com.lhz.sk.himalaya.presenters.DetailPresenter;
 import com.lhz.sk.himalaya.presenters.SearchPresenter;
@@ -47,7 +48,7 @@ public class SearchActivity extends BaseActivity implements ISearchViewCallBack 
     private EditText mSearchEt;
     private TextView mSearchTv;
     private FrameLayout mContentfl;
-    private SearchPresenter mSearchPresenter;
+    private ISearchPresenter mSearchPresenter;
     private String TAB = "SearchActivity";
     private FlowTextLayout mTextLayout;
     private UILoader mUiLoader;
